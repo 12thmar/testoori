@@ -27,3 +27,6 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN cd usr/bin; ln -s nodejs node; cd ../..
+
+RUN npm install -g protractor
+RUN webdriver-manager update
