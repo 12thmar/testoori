@@ -1,17 +1,10 @@
 FROM ubuntu:12.04
 MAINTAINER Seid Adem <seid.adem@gmail.com>
 
-RUN apt-get install -y software-properties-common
-
 # I am not sure about the belwo setting
-RUN apt-get update && apt-get install -y \
-    aufs-tools \
-    automake \
-    btrfs-tools \
-    build-essential \
+RUN apt-get update && apt-get install -y \ 
     curl \
-    git \
-    --no-install-recommends
+    git 
 
 #
 # Install git client, jdk
