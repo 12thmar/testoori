@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTAINER Hector Castro hector@basho.com
+MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 RUN apt-get update && apt-get install -y \
     aufs-tools \
