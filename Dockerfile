@@ -4,8 +4,8 @@ MAINTAINER Seid Adem <seid.adem@gmail.com>
 # I am not sure about the belwo setting
 RUN apt-get update && apt-get install -y \ 
     curl \
-    git 
-
+    git \
+    wget
 #
 # Install git client, jdk
 #
