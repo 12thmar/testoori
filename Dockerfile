@@ -42,7 +42,9 @@ ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 # Create a Xvfb init.d deamon
 #
 RUN apt-get install -y xvfb
-ADD xvfb /etc/init.d/
+# Copy over service script
+ADD /selenium/xvfb /etc/init.d/xvfb
+#ADD xvfb /etc/init.d/
 RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
