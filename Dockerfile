@@ -15,7 +15,17 @@ RUN apt-get install -y default-jdk
 
 
 #install nodejs with Ubuntu:
-RUN apt-get install -y nodejs
+#RUN apt-get install -y nodejs
+ENV NODE_VERSION 0.10.26
+RUN \
+cd /tmp && \
+wget http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz && \
+tar -zxf node-$NODE_VERSION-linux-x64.tar.gz && \
+cd node-$NODE_VERSION-linux-x64 && \
+cp -prf bin/* /usr/local/bin/ && \
+cp -prf lib/* /usr/local/lib/ && \
+cp -prf share/* /usr/local/share/
+
 ##RUN \
 ##cd /tmp && \
 ##wget http://nodejs.org/dist/node-latest.tar.gz && \
