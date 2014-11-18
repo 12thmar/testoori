@@ -5,7 +5,8 @@ MAINTAINER Seid Adem <seid.adem@gmail.com>
 RUN apt-get update && apt-get install -y \ 
     curl \
     git \
-    wget
+    wget \
+    bzip2
 #
 # Install git client, jdk
 #
@@ -25,19 +26,6 @@ cd node-$NODE_VERSION-linux-x64 && \
 cp -prf bin/* /usr/local/bin/ && \
 cp -prf lib/* /usr/local/lib/ && \
 cp -prf share/* /usr/local/share/
-
-##RUN \
-##cd /tmp && \
-##wget http://nodejs.org/dist/node-latest.tar.gz && \
-##tar xvzf node-latest.tar.gz && \
-##rm -f node-latest.tar.gz && \
-##cd node-v* && \
-##./configure && \
-##CXX="g++ -Wno-unused-local-typedefs" make && \
-##CXX="g++ -Wno-unused-local-typedefs" make install && \
-##cd /tmp && \
-##rm -rf /tmp/node-v* && \
-##echo '\n# Node.js\nexport PATH="node_modules/.bin:$PATH"' >> /root/.bashrc
 
 RUN apt-get install -y npm
 RUN cd usr/bin; ln -s nodejs node; cd ../..
@@ -77,6 +65,7 @@ RUN apt-get install -y libfontconfig1-dev
 #
 RUN apt-get install -y chromium-browser firefox
 RUN npm install -g phantomjs
+
 
 #
 # Install Selenium and chromedriver.
