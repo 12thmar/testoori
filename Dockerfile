@@ -78,12 +78,12 @@ RUN npm install -g chromedriver
 # Install Selenium.
 #
 RUN \
-/usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium
-mkdir /usr/local/share/selenium
-wget http://selenium.googlecode.com/files/selenium-server-standalone-2.37.0.jar
-mv selenium-server-standalone-2.37.0.jar /usr/local/share/selenium
-chown -R selenium:selenium /usr/local/share/selenium
-mkdir /var/log/selenium
+/usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium \
+mkdir /usr/local/share/selenium \
+wget http://selenium.googlecode.com/files/selenium-server-standalone-2.37.0.jar \
+mv selenium-server-standalone-2.37.0.jar /usr/local/share/selenium \
+chown -R selenium:selenium /usr/local/share/selenium \
+mkdir /var/log/selenium \
 chown selenium:selenium /var/log/selenium
 
 #Place start script into /etc/init.d/selenium, and note that it uses the same DISPLAY value as for the Xvfb
