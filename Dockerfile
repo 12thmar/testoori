@@ -87,10 +87,12 @@ mkdir /var/log/selenium && \
 chown selenium:selenium /var/log/selenium
 
 #Place start script into /etc/init.d/selenium, and note that it uses the same DISPLAY value as for the Xvfb
+# Copy over service script
 ADD /selenium/selenium /etc/init.d/selenium
 RUN chown root:root /etc/init.d/selenium
 RUN chmod a+x /etc/init.d/selenium
-RUN update-rc.d  /etc/init.d/selenium defaults
+RUN update-rc.d selenium defaults
+
 
 #Logfile for the PhantomJS WebDriver
 RUN touch /phantomjsdriver.log
