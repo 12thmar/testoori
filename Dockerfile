@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
     sudo \
-    vim \
+    vim 
 
 RUN apt-get install traceroute
 
