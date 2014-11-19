@@ -6,7 +6,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     wget \
-    bzip2
+    bzip2 \
+    sudo \
+    vi \
+    traceroute
 #
 # Install git client, jdk
 #
