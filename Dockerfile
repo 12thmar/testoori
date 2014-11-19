@@ -8,8 +8,10 @@ RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
     sudo \
-    vi \
-    traceroute
+    vim \
+
+RUN apt-get install traceroute
+
 #
 # Install git client, jdk
 #
