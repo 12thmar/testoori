@@ -75,11 +75,6 @@ RUN cd usr/bin; ln -s nodejs node; cd ../..
 RUN npm install -g protractor
 RUN webdriver-manager update
 
-#=================
-# Install Firefox 
-#=================
-RUN apt-get install firefox
-
 
 #==============
 # VNC and Xvfb
