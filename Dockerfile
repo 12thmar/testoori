@@ -37,16 +37,16 @@ RUN echo "US/Pacific" | sudo tee /etc/timezone \
 #=================
 # Install jdk
 #=================
-RUN apt-get install -y default-jdk
+# RUN apt-get install -y default-jdk
 
 #======
 # Java
 # Minimal runtime used for executing non GUI Java programs
 #======
-# RUN apt-get update -qqy \
-#  && apt-get -qqy --no-install-recommends install \
-#    openjdk-7-jre-headless \
-#  && rm -rf /var/lib/apt/lists/*
+ RUN apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install \
+    openjdk-7-jre-headless \
+  && rm -rf /var/lib/apt/lists/*
 
 
 #=================
