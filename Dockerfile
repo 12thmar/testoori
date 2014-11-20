@@ -193,4 +193,4 @@ EXPOSE 4444 5900
 # CMD or ENTRYPOINT
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
-CMD ["/opt/selenium/entry_point.sh"]
+# CMD ["/opt/selenium/entry_point.sh"]
