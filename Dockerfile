@@ -108,50 +108,72 @@ RUN apt-get update -qqy \
 RUN  mkdir -p /opt/selenium \
   && wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
 
+#==================
+# PhantomJS magic.
+# this package is necessary to prevent PhantomJS 
+# from failing silently in a very annoying fashion
+#==================
+RUN apt-get install -y libfontconfig1-dev
+
+
 
 #==================
 # Chrome webdriver
 #==================
-ENV CHROME_DRIVER_VERSION 2.12
-RUN cd /tmp \
-  && wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
-  && cd /opt/selenium \
-  && rm -rf chromedriver \
-  && unzip /tmp/chromedriver_linux64.zip \
-  && rm /tmp/chromedriver_linux64.zip \
-  && mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
-  && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
-  && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+RUN apt-get update -qqy 
+  && apt-get install -y chromium-browser
+
+#ENV CHROME_DRIVER_VERSION 2.12
+#RUN cd /tmp \
+#  && wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+#  && cd /opt/selenium \
+#  && rm -rf chromedriver \
+#  && unzip /tmp/chromedriver_linux64.zip \
+#  && rm /tmp/chromedriver_linux64.zip \
+#  && mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+#  && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+#  && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+
+#===============
+# Google Chrome
+#===============
+#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+#  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+#  && apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install \
+#    google-chrome-stable \
+#  && rm -rf /var/lib/apt/lists/* \
+#  && rm /etc/apt/sources.list.d/google-chrome.list
 
 
 
-#=========
+#===============
 # fluxbox
 # A fast, lightweight and responsive window manager
-#=========
+#===============
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install \
     fluxbox \
   && rm -rf /var/lib/apt/lists/*
 
-#===============
-# Google Chrome
-#===============
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-  && apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install \
-    google-chrome-stable \
-  && rm -rf /var/lib/apt/lists/* \
-  && rm /etc/apt/sources.list.d/google-chrome.list
 
 #=================
 # Mozilla Firefox
 #=================
-RUN apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install \
-    firefox \
-  && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qqy 
+  && apt-get install -y firefox
+
+#RUN apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install \
+#    firefox \
+#  && rm -rf /var/lib/apt/lists/*
+
+#=================
+# Phantomjs
+#=================
+RUN npm install -g phantomjs
+
+
 
 
 #========================================
