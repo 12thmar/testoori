@@ -113,7 +113,7 @@ RUN  mkdir -p /opt/selenium \
 # this package is necessary to prevent PhantomJS 
 # from failing silently in a very annoying fashion
 #==================
-RUN apt-get install -y libfontconfig1-dev
+#RUN apt-get install -y libfontconfig1-dev
 
 
 
