@@ -67,35 +67,39 @@ RUN cd usr/bin; ln -s nodejs node; cd ../..
 # Install protractor 
 #=================
 RUN npm install -g protractor
-## RUN webdriver-manager update
+
+#=================
+# Phantomjs
+#=================
+RUN npm install -g phantomjs
 
 # Download the selenium standalone server
-CMD ['./node_modules/protractor/bin/webdriver-manager install --stand-alone']
+CMD ['/usr/local/lib/node_modules/protractor/bin/webdriver-manager install --stand-alone']
 
 
 #==============
 # VNC and Xvfb
 #==============
-RUN apt-get update -qqy \
-  && apt-get -qqy install \
-    x11vnc \
-    xvfb \
-  && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p ~/.vnc \
-  && x11vnc -storepasswd secret ~/.vnc/passwd
+##RUN apt-get update -qqy \
+##  && apt-get -qqy install \
+##    x11vnc \
+##    xvfb \
+##  && rm -rf /var/lib/apt/lists/* \
+##  && mkdir -p ~/.vnc \
+##  && x11vnc -storepasswd secret ~/.vnc/passwd
 
 
 #=======
 # Fonts
 #=======
-RUN apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install \
-    fonts-ipafont-gothic \
-    xfonts-100dpi \
-    xfonts-75dpi \
-    xfonts-cyrillic \
-    xfonts-scalable \
-  && rm -rf /var/lib/apt/lists/*
+##RUN apt-get update -qqy \
+##  && apt-get -qqy --no-install-recommends install \
+##    fonts-ipafont-gothic \
+##    xfonts-100dpi \
+##    xfonts-75dpi \
+##    xfonts-cyrillic \
+##    xfonts-scalable \
+##  && rm -rf /var/lib/apt/lists/*
 
 
 #==========
@@ -110,7 +114,7 @@ RUN apt-get update -qqy \
 # this package is necessary to prevent PhantomJS 
 # from failing silently in a very annoying fashion
 #==================
-RUN apt-get install -y libfontconfig1-dev
+# RUN apt-get install -y libfontconfig1-dev
 
 
 #==================
@@ -130,12 +134,6 @@ RUN apt-get install -y libfontconfig1-dev
 ##wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/33.0/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 && \
 ##tar xvjf firefox-$FIREFOX_VERSION.tar.bz2 && \
 ##ln -s /usr/local/firefox/firefox /usr/bin/firefox
-
-
-#=================
-# Phantomjs
-#=================
-RUN npm install -g phantomjs
 
 
 
