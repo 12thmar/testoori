@@ -1,7 +1,21 @@
-FROM phusion/baseimage:0.9.9
+FROM ubuntu:12.04
 MAINTAINER Seid Adem <seid.adem@gmail.com>
 
-# Set correct environment variables.
+#========================
+# Miscellaneous packages
+#========================
+RUN apt-get update && apt-get install -y \ 
+    curl \
+    git \
+    wget \
+    zip \
+    bzip2 \
+    sudo \
+    vim 
+
+RUN apt-get install traceroute
+
+
 #=================
 # Locale settings
 #=================
@@ -21,21 +35,20 @@ ENV TZ "US/Pacific"
 RUN echo "US/Pacific" | sudo tee /etc/timezone \
   && dpkg-reconfigure --frontend noninteractive tzdata
 
-
-# Regenerate SSH host keys. baseimage-docker does not contain any, so you
-# have to do that yourself. You may also comment out this instruction; the
-# init system will auto-generate one during boot.
-# RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
-
-
 #=================
 # Install jdk
 #=================
 RUN apt-get update
 RUN apt-get install -y default-jdk
+
+#======
+# Java
+# Minimal runtime used for executing non GUI Java programs
+#======
+# RUN apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install \
+#    openjdk-7-jre-headless \
+#  && rm -rf /var/lib/apt/lists/*
 
 
 #=================
@@ -110,6 +123,29 @@ RUN  mkdir -p /opt/selenium \
 RUN apt-get update -qqy 
   && apt-get install -y chromium-browser
 
+#ENV CHROME_DRIVER_VERSION 2.12
+#RUN cd /tmp \
+#  && wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+#  && cd /opt/selenium \
+#  && rm -rf chromedriver \
+#  && unzip /tmp/chromedriver_linux64.zip \
+#  && rm /tmp/chromedriver_linux64.zip \
+#  && mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+#  && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+#  && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+
+#===============
+# Google Chrome
+#===============
+#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+#  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+#  && apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install \
+#    google-chrome-stable \
+#  && rm -rf /var/lib/apt/lists/* \
+#  && rm /etc/apt/sources.list.d/google-chrome.list
+
+
 
 #===============
 # fluxbox
@@ -126,6 +162,11 @@ RUN apt-get update -qqy \
 #=================
 RUN apt-get update -qqy 
   && apt-get install -y firefox
+
+#RUN apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install \
+#    firefox \
+#  && rm -rf /var/lib/apt/lists/*
 
 #=================
 # Phantomjs
@@ -175,6 +216,3 @@ EXPOSE 4444 5900
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
 # CMD ["/opt/selenium/entry_point.sh"]
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
