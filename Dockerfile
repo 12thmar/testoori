@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.9
+FROM phusion/baseimage:0.9.15
 MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 # Set correct environment variables.
