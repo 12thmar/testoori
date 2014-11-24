@@ -70,7 +70,7 @@ RUN npm install -g protractor
 ## RUN webdriver-manager update
 
 # Download the selenium standalone server
-RUN ./node_modules/protractor/bin/webdriver-manager install --stand-alone
+CMD ['./node_modules/protractor/bin/webdriver-manager install --stand-alone']
 
 
 #==============
@@ -150,8 +150,8 @@ RUN sudo useradd seluser --shell /bin/bash --create-home \
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
 #====================================================================
-COPY ./bin/*.sh /opt/selenium/
-RUN  chmod +x /opt/selenium/*.sh
+## COPY ./bin/*.sh /opt/selenium/
+## RUN  chmod +x /opt/selenium/*.sh
 
 
 #============================
