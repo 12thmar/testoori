@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.10
+FROM phusion/baseimage:0.9.9
 MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 # Set correct environment variables.
@@ -106,8 +106,7 @@ RUN  mkdir -p /opt/selenium \
 # this package is necessary to prevent PhantomJS 
 # from failing silently in a very annoying fashion
 #==================
-#RUN apt-get install -y libfontconfig1-dev
-
+RUN apt-get install -y libfontconfig1-dev
 
 
 #==================
@@ -117,21 +116,17 @@ RUN apt-get update -qqy
   && apt-get install -y chromium-browser
 
 
-#===============
-# fluxbox
-# A fast, lightweight and responsive window manager
-#===============
-RUN apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install \
-    fluxbox \
-  && rm -rf /var/lib/apt/lists/*
-
-
 #=================
 # Mozilla Firefox
 #=================
-RUN apt-get update -qqy 
-  && apt-get install -y firefox
+#RUN apt-get update -qqy 
+#  && apt-get install -y firefox
+ENV FIREFOX_VERSION 33.0
+RUN cd /usr/local && \
+wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/33.0/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 && \
+tar xvjf firefox-$FIREFOX_VERSION.tar.bz2 && \
+ln -s /usr/local/firefox/firefox /usr/bin/firefox
+
 
 #=================
 # Phantomjs
