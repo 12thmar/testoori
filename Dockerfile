@@ -67,7 +67,10 @@ RUN cd usr/bin; ln -s nodejs node; cd ../..
 # Install protractor 
 #=================
 RUN npm install -g protractor
-RUN webdriver-manager update
+## RUN webdriver-manager update
+
+# Download the selenium standalone server
+RUN ./node_modules/protractor/bin/webdriver-manager install --stand-alone
 
 
 #==============
@@ -98,8 +101,9 @@ RUN apt-get update -qqy \
 #==========
 # Selenium
 #==========
-RUN  mkdir -p /opt/selenium \
-  && wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
+##ENV SELENIUM_VERSION 2.44.0
+##RUN  mkdir -p /opt/selenium \
+## && wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-$SELENIUM_VERSION.jar -O /opt/selenium/selenium-server-standalone.jar
 
 #==================
 # PhantomJS magic.
@@ -112,8 +116,8 @@ RUN apt-get install -y libfontconfig1-dev
 #==================
 # Chrome webdriver
 #==================
-RUN apt-get update -qqy 
-  && apt-get install -y chromium-browser
+## RUN apt-get update -qqy 
+##  && apt-get install -y chromium-browser
 
 
 #=================
@@ -121,11 +125,11 @@ RUN apt-get update -qqy
 #=================
 #RUN apt-get update -qqy 
 #  && apt-get install -y firefox
-ENV FIREFOX_VERSION 33.0
-RUN cd /usr/local && \
-wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/33.0/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 && \
-tar xvjf firefox-$FIREFOX_VERSION.tar.bz2 && \
-ln -s /usr/local/firefox/firefox /usr/bin/firefox
+##ENV FIREFOX_VERSION 33.0
+##RUN cd /usr/local && \
+##wget http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/33.0/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 && \
+##tar xvjf firefox-$FIREFOX_VERSION.tar.bz2 && \
+##ln -s /usr/local/firefox/firefox /usr/bin/firefox
 
 
 #=================
