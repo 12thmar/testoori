@@ -30,6 +30,12 @@ RUN echo "US/Pacific" | sudo tee /etc/timezone \
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
+#=================
+# Install some tools
+#=================
+RUN apt-get update && apt-get install -y \ 
+    wget \
+    vim 
 
 #=================
 # Install jdk
