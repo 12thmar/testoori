@@ -160,7 +160,7 @@ RUN apt-get update -qqy \
 #=================
 # Mozilla Firefox
 #=================
-RUN apt-get update -qqy 
+#RUN apt-get update -qqy 
   && apt-get install -y firefox
 
 #RUN apt-get update -qqy \

@@ -104,12 +104,12 @@ RUN apt-get install -y default-jdk
 # Set Up the Selenium Standalone Server as a Service                           (7)
 # Then place this start script into /etc/init.d/selenium:
 #=================
+ENV SELENIUM_VERSION_PRE 2.44
 ENV SELENIUM_VERSION 2.44.0
 RUN \
 /usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium && \
 mkdir /usr/local/share/selenium && \
-wget http://selenium.googlecode.com/files/selenium-server-standalone-$SELENIUM_VERSION.jar && \
-mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/share/selenium && \
+wget --no-verbose http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/share/selenium/selenium && \
 chown -R selenium:selenium /usr/local/share/selenium && \
 mkdir /var/log/selenium && \
 chown selenium:selenium /var/log/selenium && \
