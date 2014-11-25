@@ -86,10 +86,19 @@ RUN update-rc.d xvfb defaults
 #==============
 # Install Packages Required by Browsers                                        (3)
 #==============
-RUN sudo apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi
-RUN sudo apt-get install -y xfonts-scalable xserver-xorg-core
-RUN sudo apt-get install -y dbus-x11
-RUN sudo apt-get install -y libfontconfig1-dev
+RUN sudo apt-get install -y 
+    x11-xkb-utils \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    xfonts-scalable \ 
+    xserver-xorg-core \
+    dbus-x11 \
+    libfontconfig1-dev \
+    libxi6 \
+    libgconf-2-4 
+
+
+
 
 
 #==============
