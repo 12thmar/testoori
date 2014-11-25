@@ -127,7 +127,7 @@ RUN \
 /usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium && \
 mkdir /usr/local/share/selenium && \
 cd /tmp && \
-wget http://selenium.googlecode.com/files/selenium-server-standalone-$SELENIUM_VERSION.0.jar && \
+wget http://selenium.googlecode.com/files/selenium-server-standalone-$SELENIUM_VERSION.jar && \
 chown -R selenium:selenium /usr/local/share/selenium && \
 mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/share/selenium && \
 chown selenium:selenium /usr/local/share/selenium && \
