@@ -115,9 +115,9 @@ mkdir /var/log/selenium && \
 chown selenium:selenium /var/log/selenium
 
 ADD /selenium/selenium /etc/init.d/selenium 
-RUN chown root:root /etc/init.d/selenium && \
-RUN sudo chmod a+x /etc/init.d/selenium && \
-RUN sudo update-rc.d  /etc/init.d/selenium defaults && \
+RUN chown root:root /etc/init.d/selenium 
+RUN sudo chmod a+x /etc/init.d/selenium 
+RUN sudo update-rc.d  /etc/init.d/selenium defaults 
 
 #=================
 # Work Around a Protractor / PhantomJS Issue                                 (8)
