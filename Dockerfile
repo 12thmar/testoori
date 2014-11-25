@@ -99,12 +99,27 @@ RUN sudo apt-get install -y
 
 
 
-
-
 #==============
 # Install Browsers                                                             (4)
 #==============
-sudo apt-get install chromium-browser firefox
+#==================
+# Chrome webdriver
+#==================
+# Add Google Chrome's repo to sources.list
+RUN \
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && \
+echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list && \
+apt-get update -qqy && \
+apt-get install -y 
+    libxpm4 \
+    libxrender1 \
+    libgtk2.0-0 \
+    libnss3 \
+    libgconf-2-4 \
+    google-chrome-stable &&\
+apt-get -qqy --no-install-recommends install google-chrome-stable && \
+sudo ln /usr/lib/node_modules/protractor/selenium/chromedriver /usr/bin/chromedriver
+
 ENV PHANTOM_VERSION 1.9.7
 RUN \
 cd /tmp && \
