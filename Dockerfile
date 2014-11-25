@@ -112,9 +112,7 @@ mkdir /usr/local/share/selenium && \
 wget --no-verbose http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/share/selenium/selenium && \
 chown -R selenium:selenium /usr/local/share/selenium && \
 mkdir /var/log/selenium && \
-chown selenium:selenium /var/log/selenium && \
-sudo mkdir /var/log/selenium && \
-sudo chown selenium:selenium /var/log/selenium 
+chown selenium:selenium /var/log/selenium
 
 ADD /selenium/selenium /etc/init.d/selenium 
 RUN chown root:root /etc/init.d/selenium && \
