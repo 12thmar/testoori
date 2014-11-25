@@ -47,12 +47,10 @@ cd /tmp && \
 wget http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz && \
 tar -zxf node-$NODE_VERSION-linux-x64.tar.gz && \
 cd node-$NODE_VERSION-linux-x64 && \
-sudo ./configure && \
-sudo make && \
-sudo make install && \
-## cp -prf bin/* /usr/local/bin/ && \
-## cp -prf lib/* /usr/local/lib/ && \
-## cp -prf share/* /usr/local/share/
+cp -prf bin/* /usr/local/bin/ && \
+cp -prf lib/* /usr/local/lib/ && \
+cp -prf share/* /usr/local/share/
+
 
 #=================
 # Install npm 
