@@ -35,8 +35,14 @@ CMD ["/sbin/my_init"]
 #=================
 RUN apt-get update && apt-get install -y \ 
     wget \
-    vim 
-
+    vim \
+    gcc \
+    make \
+    openssl \
+    screen \
+    unzip \
+    xclip \
+    zip
 
 #=================
 # Install nodejs                                                                (1)
@@ -51,6 +57,9 @@ cp -prf bin/* /usr/local/bin/ && \
 cp -prf lib/* /usr/local/lib/ && \
 cp -prf share/* /usr/local/share/
 
+RUN npm install -g requirejs
+RUN npm install -g grunt-cli
+RUN npm install -g karma
 
 #=================
 # Install npm 
@@ -80,13 +89,21 @@ RUN update-rc.d xvfb defaults
 RUN sudo apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi
 RUN sudo apt-get install -y xfonts-scalable xserver-xorg-core
 RUN sudo apt-get install -y dbus-x11
+RUN sudo apt-get install -y libfontconfig1-dev
 
 
 #==============
 # Install Browsers                                                             (4)
 #==============
 sudo apt-get install chromium-browser firefox
-sudo npm install -g phantomjs
+ENV PHANTOM_VERSION 1.9.7
+RUN \
+cd /tmp && \
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 
+tar -jxvf phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 
+mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+
+#sudo npm install -g phantomjs
 
 
 #==============
@@ -104,21 +121,32 @@ RUN apt-get install -y default-jdk
 # Set Up the Selenium Standalone Server as a Service                           (7)
 # Then place this start script into /etc/init.d/selenium:
 #=================
-ENV SELENIUM_VERSION_PRE 2.44
-ENV SELENIUM_VERSION 2.44.0
+ENV SELENIUM_VERSION_PRE 2.37
+ENV SELENIUM_VERSION 2.37.0
 RUN \
 /usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium && \
 mkdir /usr/local/share/selenium && \
-wget --no-verbose http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/share/selenium/selenium && \
+cd /tmp && \
+wget http://selenium.googlecode.com/files/selenium-server-standalone-$SELENIUM_VERSION.0.jar && \
 chown -R selenium:selenium /usr/local/share/selenium && \
+mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/share/selenium && \
+chown selenium:selenium /usr/local/share/selenium && \
+
+# Set up loggin directory for Selenium
 mkdir /var/log/selenium && \
 chown selenium:selenium /var/log/selenium
 
+# Copy over Selenium service script
 ADD /selenium/selenium /etc/init.d/selenium 
+# Make sure the service is executable, owned by root, and updated
 RUN \
 chown root:root /etc/init.d/selenium && \ 
 chmod a+x /etc/init.d/selenium && \
-update-rc.d selenium defaults 
+update-rc.d selenium defaults && \
+
+# run 
+webdriver-manager update --standalone
+
 
 #=================
 # Work Around a Protractor / PhantomJS Issue                                 (8)
