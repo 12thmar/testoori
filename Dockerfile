@@ -137,7 +137,7 @@ webdriver-manager update --standalone
 ENV CHROME_DRIVER_VERSION 2.12
 RUN \
  cd /tmp && \
- wget --no-verbose -o chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip && \
+ wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip && \
  rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver && \
  unzip /tmp/chromedriver_linux64.zip && \
  rm /tmp/chromedriver_linux64.zip && \
