@@ -90,14 +90,14 @@ RUN sudo apt-get install -y
     x11-xkb-utils \
     xfonts-100dpi \
     xfonts-75dpi \
-    xfonts-scalable \
-    fonts-ipafont-gothic \ 
-    xfonts-cyrillic \
+    xfonts-scalable \ 
     xserver-xorg-core \
     dbus-x11 \
     libfontconfig1-dev \
     libxi6 \
     libgconf-2-4 
+    
+
 
 #=================
 # Set Up the Selenium Standalone Server as a Service                           (7)
@@ -153,7 +153,7 @@ RUN \
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
 RUN apt-get update -qqy 
-RUN apt-get -qqy --no-install-recommends install google-chrome-stable 
+RUN sudo apt-get -qqy --no-install-recommends install google-chrome-stable 
 RUN rm -rf /var/lib/apt/lists/* 
 
 ENV PHANTOM_VERSION 1.9.7
