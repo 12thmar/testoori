@@ -136,7 +136,56 @@ webdriver-manager update --standalone
 #==================
 ENV CHROME_DRIVER_VERSION 2.12
 RUN cd /tmp \
-&& wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+&& wget --no-verbose chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
 && cd /usr/local/lib/node_modules/protractor/selenium \
 && rm -rf chromedriver \
 && unzip /tmp/chromedriver_linux64.zip \
+&& rm /tmp/chromedriver_linux64.zip \
+&& mv /tmp/chromedriver /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+&& chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+&& ln -fs /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+
+#===============
+# Google Chrome                                                                (5)
+#===============
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+&& apt-get update -qqy \
+&& apt-get -qqy --no-install-recommends install google-chrome-stable \
+&& rm -rf /var/lib/apt/lists/* 
+
+ENV PHANTOM_VERSION 1.9.7
+RUN \
+cd /tmp && \
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 
+tar -jxvf phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 
+mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+
+#===============
+# Phantomjs                                                                
+#===============
+RUN npm install -g phantomjs
+
+#==============
+# Install WebDriver Implementations                                            
+#==============
+#sudo npm install -g chromedriver
+
+#=================
+# Install jdk                                                                  (6)
+#=================
+RUN apt-get update
+RUN apt-get install -y default-jdk
+
+
+
+#=================
+# Work Around a Protractor / PhantomJS Issue                                 (8)
+#=================
+RUN sudo touch /phantomjsdriver.log
+RUN sudo chmod 666 /phantomjsdriver.log
+
+#=================
+# Install Imagemagick or for Snapshots                                       (9)
+#=================
+sudo apt-get install imagemagick
+
