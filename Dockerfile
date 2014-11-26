@@ -160,7 +160,7 @@ wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOM_VERSION-
 tar -jxvf phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 
 mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
 
-===============
+#===============
 # Phantomjs                                                                
 #===============
 RUN npm install -g phantomjs
