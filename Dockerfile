@@ -137,7 +137,7 @@ webdriver-manager update --standalone
 ENV CHROME_DRIVER_VERSION 2.12
 RUN \
  cd /tmp && \
- wget --no-verbose chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+ wget --no-verbose chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip && \
  rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver && \
  unzip /tmp/chromedriver_linux64.zip && \
  rm /tmp/chromedriver_linux64.zip && \
@@ -167,7 +167,7 @@ mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin/phantomj
 
 #==============
 # Install WebDriver Implementations                                            
-#==============
+#============== 
 #sudo npm install -g chromedriver
 
 #=================
