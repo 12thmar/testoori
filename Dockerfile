@@ -96,7 +96,7 @@ RUN sudo apt-get install -y
     libfontconfig1-dev \
     libxi6 \
     libgconf-2-4 
-    
+
 
 
 #=================
@@ -153,7 +153,7 @@ RUN \
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
 RUN apt-get update -qqy 
-RUN sudo apt-get -qqy --no-install-recommends install google-chrome-stable 
+RUN sudo apt-get -y install google-chrome-stable 
 RUN rm -rf /var/lib/apt/lists/* 
 
 ENV PHANTOM_VERSION 1.9.7
