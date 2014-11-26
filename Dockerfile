@@ -90,7 +90,9 @@ RUN sudo apt-get install -y
     x11-xkb-utils \
     xfonts-100dpi \
     xfonts-75dpi \
-    xfonts-scalable \ 
+    xfonts-scalable \
+    fonts-ipafont-gothic \ 
+    xfonts-cyrillic \
     xserver-xorg-core \
     dbus-x11 \
     libfontconfig1-dev \
@@ -149,9 +151,10 @@ RUN \
 # Google Chrome                                                                (5)
 #===============
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
- apt-get update -qqy && \
- apt-get -qqy --no-install-recommends install google-chrome-stable && \
- rm -rf /var/lib/apt/lists/* 
+echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
+RUN apt-get update -qqy 
+RUN apt-get -qqy --no-install-recommends install google-chrome-stable 
+RUN rm -rf /var/lib/apt/lists/* 
 
 ENV PHANTOM_VERSION 1.9.7
 RUN \
