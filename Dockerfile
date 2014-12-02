@@ -129,16 +129,16 @@ RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
 #==================
 # Chrome webdriver
 #==================
-ENV CHROME_DRIVER_VERSION 2.12
-RUN cd /tmp && \
- wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
- cd /opt/selenium && \
- rm -rf chromedriver && \
- unzip /tmp/chromedriver_linux64.zip && \
- rm /tmp/chromedriver_linux64.zip && \
- mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
- chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
- ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+## ENV CHROME_DRIVER_VERSION 2.12
+## RUN cd /tmp && \
+## wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+## cd /opt/selenium && \
+## rm -rf chromedriver && \
+## unzip /tmp/chromedriver_linux64.zip && \
+## rm /tmp/chromedriver_linux64.zip && \
+## mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+## chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+## ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
 # run 
 ##### webdriver-manager update --standalone
