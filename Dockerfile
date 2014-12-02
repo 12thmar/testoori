@@ -121,8 +121,11 @@ RUN apt-get update -qqy && \
 #==========
 # Selenium                                                                      (7)-updated
 #==========
-RUN mkdir -p /opt/selenium \
-&& wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
+# RUN mkdir -p /opt/selenium \
+# && wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
+
+RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
+
 #==================
 # Chrome webdriver
 #==================
