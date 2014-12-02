@@ -88,7 +88,8 @@ RUN apt-get update -qqy && \
 # Install protractor 
 #=================
 ## RUN npm install -g protractor
-npm install -g protractor@1.0.0
+ENV PROTRACTOR_VERSION 1.0.0
+RUN npm install -g protractor@$PROTRACTOR_VERSION
 
 
 #=======
@@ -155,7 +156,7 @@ RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
 # Chrome webdriver
 #==================
 ENV CHROME_DRIVER_VERSION 2.10
-npm install -g chromedriver@CHROME_DRIVER_VERSION
+RUN npm install -g chromedriver@CHROME_DRIVER_VERSION
 
 
 #==================
