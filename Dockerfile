@@ -88,9 +88,7 @@ RUN apt-get update -qqy && \
 # Install protractor 
 #=================
 ## RUN npm install -g protractor
-
-ENV PROTRACTOR_VERSION 1.0.0
-npm install -g protractor@$PROTRACTOR_VERSION
+npm install -g protractor@1.0.0
 
 
 #=======
