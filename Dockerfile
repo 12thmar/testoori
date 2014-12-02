@@ -161,7 +161,7 @@ RUN apt-get update -qqy && \
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
 RUN apt-get update -qqy && \
-    apt-get install google-chrome-stable && \
+    apt-get -qqy install google-chrome-stable && \
     rm -rf /var/lib/apt/lists/* && \
     rm /etc/apt/sources.list.d/google-chrome.list
 
