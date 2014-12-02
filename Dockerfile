@@ -98,7 +98,7 @@ RUN apt-get update -qqy && \
       xfonts-100dpi \
       xfonts-75dpi \
       xfonts-cyrillic \
-      xfonts-scalable 
+      xfonts-scalable && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -128,15 +128,15 @@ RUN mkdir -p /opt/selenium \
 # Chrome webdriver
 #==================
 ENV CHROME_DRIVER_VERSION 2.12
-RUN cd /tmp \
-&& wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
-&& cd /opt/selenium \
-&& rm -rf chromedriver \
-&& unzip /tmp/chromedriver_linux64.zip \
-&& rm /tmp/chromedriver_linux64.zip \
-&& mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
-&& chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
-&& ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+RUN cd /tmp && \
+ wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+ cd /opt/selenium && \
+ rm -rf chromedriver && \
+ unzip /tmp/chromedriver_linux64.zip && \
+ rm /tmp/chromedriver_linux64.zip && \
+ mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+ chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+ ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
 # run 
 ##### webdriver-manager update --standalone
@@ -152,28 +152,26 @@ RUN cd /tmp \
 # fluxbox
 # A fast, lightweight and responsive window manager                            (4)-updated -A
 #=========
-RUN apt-get update -qqy \
-&& apt-get -qqy --no-install-recommends install \
-fluxbox \
-&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qqy && \
+    apt-get -qqy --no-install-recommends install fluxbox && \
+    rm -rf /var/lib/apt/lists/*
 
 #===============
 # Google Chrome                                                                (4)-updated -B
 #===============
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-&& echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-&& apt-get update -qqy \
-&& apt-get -qqy --no-install-recommends install \
-google-chrome-stable \
-&& rm -rf /var/lib/apt/lists/* \
-&& rm /etc/apt/sources.list.d/google-chrome.list
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
+RUN apt-get update -qqy && \
+    apt-get -qqy --no-install-recommends install google-chrome-stable && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /etc/apt/sources.list.d/google-chrome.list
 
 
 #=================
 # Mozilla Firefox                                                               (4)-updated -C
 #=================
-RUN apt-get update -qqy \
-&& apt-get -qqy --no-install-recommends install \
+RUN apt-get update -qqy && \
+ apt-get -qqy --no-install-recommends install \
 firefox \
 && rm -rf /var/lib/apt/lists/*
 
@@ -182,9 +180,9 @@ firefox \
 #========================================
 # Add normal user with passwordless sudo
 #========================================
-RUN sudo useradd seluser --shell /bin/bash --create-home \
-&& sudo usermod -a -G sudo seluser \
-&& echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN sudo useradd seluser --shell /bin/bash --create-home && \
+    sudo usermod -a -G sudo seluser && \
+    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 
 #====================================================================
