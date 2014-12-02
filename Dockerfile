@@ -30,6 +30,8 @@ RUN echo "US/Pacific" | sudo tee /etc/timezone \
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
+
+
 #=================
 # Install some tools
 #=================
@@ -43,6 +45,17 @@ RUN apt-get update && apt-get install -y \
     unzip \
     xclip \
     zip
+
+#=================              
+#                                                                                (0)
+#================= 
+# Add Google Chrome's repo to sources.list
+echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list
+ 
+# Install Google's public key used for signing packages (e.g. Chrome)
+# (Source: http://www.google.com/linuxrepositories/)
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
 
 #=================
 # Install nodejs                                                                (1)
@@ -62,23 +75,6 @@ RUN npm install -g grunt-cli
 RUN npm install -g karma
 RUN npm install -g request
 
-
-#=================
-# Install protractor 
-#=================
-RUN npm install -g protractor
-
-
-
-#==============
-# VNC and Xvfb                                                                 (2)-updated -A
-#==============
-RUN apt-get update -qqy && \ 
-    apt-get -qqy install x11vnc xvfb && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p ~/.vnc && \
-    x11vnc -storepasswd secret ~/.vnc/passwd
-
 #==============
 # Java
 # Minimal runtime used for executing non GUI Java programs                     (2)-updated -B
@@ -86,6 +82,15 @@ RUN apt-get update -qqy && \
 RUN apt-get update -qqy && \
     apt-get -qqy --no-install-recommends install openjdk-7-jre-headless && \ 
     rm -rf /var/lib/apt/lists/*
+
+
+#=================
+# Install protractor 
+#=================
+## RUN npm install -g protractor
+
+ENV PROTRACTOR_VERSION 1.0.0
+npm install -g protractor@$PROTRACTOR_VERSION
 
 
 #=======
@@ -97,8 +102,16 @@ RUN apt-get update -qqy && \
       xfonts-100dpi \
       xfonts-75dpi \
       xfonts-cyrillic \
-      xfonts-scalable && \
-    rm -rf /var/lib/apt/lists/*
+      xfonts-scalable \
+      x11-apps 
+
+
+#==============
+#  Xvfb                                                                        (2)-updated -A
+#==============
+RUN apt-get update -qqy && \ 
+    apt-get -qqy install xvfb && \
+    rm -rf /var/lib/apt/lists/* 
 
 
 
@@ -121,27 +134,46 @@ RUN apt-get update -qqy && \
 #==========
 # Selenium                                                                      (7)-updated
 #==========
+##############
+# version 2.44
+##############
 # RUN mkdir -p /opt/selenium \
 # && wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
+##############
+# version 2.42
+##############
+ENV SELENIUM_VERSION_PRE 2.42
+ENV SELENIUM_VERSION 2.42.0
+npm install selenium-standalone@SELENIUM_VERSION
+## RUN \
+## wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O
+##                /usr/local/lib/node_modules/protractor/selenium-server-standalone-$SELENIUM_VERSION.jar
 
 RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
+
+
 
 #==================
 # Chrome webdriver
 #==================
-## ENV CHROME_DRIVER_VERSION 2.12
-## RUN cd /tmp && \
-## wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
-## cd /opt/selenium && \
-## rm -rf chromedriver && \
-## unzip /tmp/chromedriver_linux64.zip && \
-## rm /tmp/chromedriver_linux64.zip && \
-## mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
-## chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
-## ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+ENV CHROME_DRIVER_VERSION 2.10
+npm install -g chromedriver@CHROME_DRIVER_VERSION
 
-# run 
-##### webdriver-manager update --standalone
+
+#==================
+# Chrome webdriver
+#==================
+## ENV CHROME_DRIVER_VERSION 2.10
+## RUN cd /tmp && \
+##    wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+##    cd /opt/selenium && \
+##    rm -rf chromedriver && \
+##    unzip /tmp/chromedriver_linux64.zip && \
+##    rm /tmp/chromedriver_linux64.zip && \
+##    mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+##    chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+##    ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+
 
 
 
@@ -154,37 +186,37 @@ RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
 # fluxbox
 # A fast, lightweight and responsive window manager                            (4)-updated -A
 #=========
-RUN apt-get update -qqy && \
-    apt-get -qqy --no-install-recommends install fluxbox && \
-    rm -rf /var/lib/apt/lists/*
+## RUN apt-get update -qqy && \
+##    apt-get -qqy --no-install-recommends install fluxbox && \
+##    rm -rf /var/lib/apt/lists/*
 
 #===============
 # Google Chrome                                                                (4)-updated -B
 #===============
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
-RUN apt-get update -qqy && \
-    apt-get -qqy install google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /etc/apt/sources.list.d/google-chrome.list
+## RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+## echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
+## RUN apt-get update -qqy && \
+##    apt-get -qqy install google-chrome-stable && \
+##    rm -rf /var/lib/apt/lists/* && \
+##    rm /etc/apt/sources.list.d/google-chrome.list
 
 
 #=================
 # Mozilla Firefox                                                               (4)-updated -C
 #=================
-RUN apt-get update -qqy && \
- apt-get -qqy --no-install-recommends install \
-firefox \
-&& rm -rf /var/lib/apt/lists/*
+## RUN apt-get update -qqy && \
+## apt-get -qqy --no-install-recommends install \
+##   firefox \
+##   && rm -rf /var/lib/apt/lists/*
 
 
 
 #========================================
 # Add normal user with passwordless sudo
 #========================================
-RUN sudo useradd seluser --shell /bin/bash --create-home && \
-    sudo usermod -a -G sudo seluser && \
-    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
+## RUN sudo useradd seluser --shell /bin/bash --create-home && \
+##    sudo usermod -a -G sudo seluser && \
+##    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 
 #====================================================================

@@ -5,7 +5,7 @@ export DOCKER_HOST_IP=$(netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}')
 export VNC_PORT=5900
 export XVFB_LOG="/tmp/Xvfb_headless.log"
 export FLUXBOX_LOG="/tmp/fluxbox_manager.log"
-## export VNC_LOG="/tmp/x11vnc_forever.log"
+export VNC_LOG="/tmp/x11vnc_forever.log"
 export XTERMINAL_LOG="/tmp/local-sel-headless.log"
 export SELENIUM_LOG="/tmp/selenium-server-standalone.log"
 
@@ -20,7 +20,7 @@ echo "docker.guest.dev  $CONTAINER_IP"   >> /etc/hosts
 sleep 0.5
 
 # A fast, lightweight and responsive window manager
-## fluxbox -display $DISPLAY 2>&1 | tee $FLUXBOX_LOG &
+fluxbox -display $DISPLAY 2>&1 | tee $FLUXBOX_LOG &
 
 # Start a GUI xTerm to help debugging when VNC into the container
 x-terminal-emulator -geometry 120x40+10+10 -ls -title "x-terminal-emulator" &
@@ -31,4 +31,4 @@ x-terminal-emulator -geometry 100x30-10-20 -ls -title "local-sel-headless" \
     -e "/opt/selenium/local-sel-headless.sh" 2>&1 | tee $XTERMINAL_LOG &
 
 # Start VNC server to enable viewing what's going on but not mandatory
-## x11vnc -forever -usepw -shared -rfbport $VNC_PORT -display $DISPLAY 2>&1 | tee $VNC_LOG
+x11vnc -forever -usepw -shared -rfbport $VNC_PORT -display $DISPLAY 2>&1 | tee $VNC_LOG
