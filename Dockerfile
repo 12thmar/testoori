@@ -60,135 +60,158 @@ cp -prf share/* /usr/local/share/
 RUN npm install -g requirejs
 RUN npm install -g grunt-cli
 RUN npm install -g karma
+RUN npm install -g request
 
-#=================
-# Install npm 
-#=================
-# RUN apt-get install -y npm
-# RUN cd usr/bin; ln -s nodejs node; cd ../..
 
 #=================
 # Install protractor 
 #=================
 RUN npm install -g protractor
 
+
+
 #==============
-# Xvfb                                                                         (2)
-# Then place this start script into /etc/init.d/xvfb: 
-# Make sure it is executable, owned by root, and that the service definitions are updated: 
+# VNC and Xvfb                                                                 (2)-updated -A
 #==============
-RUN sudo apt-get install -y xvfb
-ADD /selenium/xvfb /etc/init.d/xvfb
-RUN chown root:root /etc/init.d/xvfb
-RUN chmod ugo+x /etc/init.d/xvfb
-RUN update-rc.d xvfb defaults
+RUN apt-get update -qqy && \ 
+    apt-get -qqy install x11vnc xvfb && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p ~/.vnc && \
+    x11vnc -storepasswd secret ~/.vnc/passwd
+
+#==============
+# Java
+# Minimal runtime used for executing non GUI Java programs                     (2)-updated -B
+#==============
+RUN apt-get update -qqy && \
+    apt-get -qqy --no-install-recommends install openjdk-7-jre-headless && \ 
+    rm -rf /var/lib/apt/lists/*
+
+
+
+#=======
+# Fonts                                                                        (3)-updated -B
+#=======
+RUN apt-get update -qqy && \
+    apt-get -qqy --no-install-recommends install \
+      fonts-ipafont-gothic \
+      xfonts-100dpi \
+      xfonts-75dpi \
+      xfonts-cyrillic \
+      xfonts-scalable 
+    rm -rf /var/lib/apt/lists/*
+
+
 
 #==============
 # Install Packages Required by Browsers                                        (3)
 #==============
-RUN sudo apt-get install -y 
-    x11-xkb-utils \
-    xfonts-100dpi \
-    xfonts-75dpi \
-    xfonts-scalable \ 
-    xserver-xorg-core \
-    dbus-x11 \
-    libfontconfig1-dev \
-    libxi6 \
-    libgconf-2-4 
+## RUN sudo apt-get install -y 
+##    x11-xkb-utils \
+##    xfonts-100dpi \
+##    xfonts-75dpi \
+##    xfonts-scalable \ 
+##    xserver-xorg-core \
+##    dbus-x11 \
+##    libfontconfig1-dev \
+##    libxi6 \
+##    libgconf-2-4 
 
 
 
-#=================
-# Set Up the Selenium Standalone Server as a Service                           (7)
-# Then place this start script into /etc/init.d/selenium:
-#=================
-ENV SELENIUM_VERSION_PRE 2.37
-ENV SELENIUM_VERSION 2.37.0
-RUN \
-/usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium && \
-mkdir /usr/local/share/selenium && \
-cd /tmp && \
-wget http://selenium.googlecode.com/files/selenium-server-standalone-$SELENIUM_VERSION.jar && \
-chown -R selenium:selenium /usr/local/share/selenium && \
-mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/share/selenium && \
-chown selenium:selenium /usr/local/share/selenium && \
-
-# Set up loggin directory for Selenium
-mkdir /var/log/selenium && \
-chown selenium:selenium /var/log/selenium
-
-# Copy over Selenium service script
-ADD /selenium/selenium /etc/init.d/selenium 
-# Make sure the service is executable, owned by root, and updated
-RUN \
-chown root:root /etc/init.d/selenium && \ 
-chmod a+x /etc/init.d/selenium && \
-update-rc.d selenium defaults && \
-
-# run 
-webdriver-manager update --standalone
-
-
-#==============
-# Install Browsers                                                             (4)
-#==============
+#==========
+# Selenium                                                                      (7)-updated
+#==========
+RUN mkdir -p /opt/selenium \
+&& wget --no-verbose http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O /opt/selenium/selenium-server-standalone.jar
 #==================
 # Chrome webdriver
 #==================
 ENV CHROME_DRIVER_VERSION 2.12
-RUN \
- cd /tmp && \
- wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip && \
- rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver && \
- unzip /tmp/chromedriver_linux64.zip && \
- rm /tmp/chromedriver_linux64.zip && \
- mv /tmp/chromedriver /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
- chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
- ln -fs /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+RUN cd /tmp \
+&& wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+&& cd /opt/selenium \
+&& rm -rf chromedriver \
+&& unzip /tmp/chromedriver_linux64.zip \
+&& rm /tmp/chromedriver_linux64.zip \
+&& mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+&& chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
+&& ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
-#===============
-# Google Chrome                                                                (5)
-#===============
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
-RUN apt-get update -qqy 
-RUN sudo apt-get -y install google-chrome-stable 
-RUN rm -rf /var/lib/apt/lists/* 
+# run 
+##### webdriver-manager update --standalone
 
-ENV PHANTOM_VERSION 1.9.7
-RUN \
-cd /tmp && \
-wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
-tar -jxvf phantomjs-$PHANTOM_VERSION-linux-x86_64.tar.bz2 && \
-mv phantomjs-$PHANTOM_VERSION-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
 
-#===============
-# Phantomjs                                                                
-#===============
-#RUN npm install -g phantomjs
 
+
+#==============
+# Install Browsers                                                             (4)-updated 
 #==============
-# Install WebDriver Implementations                                            
-#============== 
-#sudo npm install -g chromedriver
+
+#=========
+# fluxbox
+# A fast, lightweight and responsive window manager                            (4)-updated -A
+#=========
+RUN apt-get update -qqy \
+&& apt-get -qqy --no-install-recommends install \
+fluxbox \
+&& rm -rf /var/lib/apt/lists/*
+
+#===============
+# Google Chrome                                                                (4)-updated -B
+#===============
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+&& echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+&& apt-get update -qqy \
+&& apt-get -qqy --no-install-recommends install \
+google-chrome-stable \
+&& rm -rf /var/lib/apt/lists/* \
+&& rm /etc/apt/sources.list.d/google-chrome.list
+
 
 #=================
-# Install jdk                                                                  (6)
+# Mozilla Firefox                                                               (4)-updated -C
 #=================
-RUN apt-get update
-RUN apt-get install -y default-jdk
+RUN apt-get update -qqy \
+&& apt-get -qqy --no-install-recommends install \
+firefox \
+&& rm -rf /var/lib/apt/lists/*
 
 
 
-#=================
-# Work Around a Protractor / PhantomJS Issue                                 (8)
-#=================
-RUN sudo touch /phantomjsdriver.log
-RUN sudo chmod 666 /phantomjsdriver.log
+#========================================
+# Add normal user with passwordless sudo
+#========================================
+RUN sudo useradd seluser --shell /bin/bash --create-home \
+&& sudo usermod -a -G sudo seluser \
+&& echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-#=================
-# Install Imagemagick or for Snapshots                                       (9)
-#=================
-sudo apt-get install imagemagick
 
+#====================================================================
+# Script to run selenium standalone server for Chrome and/or Firefox
+#====================================================================
+COPY ./bin/*.sh /opt/selenium/
+RUN chmod +x /opt/selenium/*.sh
+
+
+#============================
+# Some configuration options
+#============================
+ENV SCREEN_WIDTH 1360
+ENV SCREEN_HEIGHT 1020
+ENV SCREEN_DEPTH 24
+ENV SELENIUM_PORT 4444
+ENV DISPLAY :20.0
+#================================
+# Expose Container's Directories
+#================================
+VOLUME /var/log
+#================================
+# Expose Container's Ports
+#================================
+EXPOSE 4444 5900
+#===================
+# CMD or ENTRYPOINT
+#===================
+# Start a selenium standalone server for Chrome and/or Firefox
+CMD ["/opt/selenium/entry_point.sh"]
