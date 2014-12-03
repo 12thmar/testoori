@@ -81,7 +81,7 @@ RUN webdriver-manager update
 # Create a Xvfb init.d deamon                                                  (3)
 #==========
 RUN apt-get install -y xvfb
-ADD xvfb /etc/init.d/
+ADD selenium/xvfb /etc/init.d/
 RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
