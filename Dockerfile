@@ -89,7 +89,7 @@ RUN update-rc.d xvfb defaults
 #==========
 # Packages to keep Chrome and FF happy.                                        (4)
 #==========
-RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi
+RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-cyrillic 
 RUN apt-get install -y xfonts-scalable xserver-xorg-core
 RUN apt-get update
 RUN apt-get install -y dbus-x11
