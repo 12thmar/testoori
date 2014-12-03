@@ -1,120 +1,140 @@
-FROM ubuntu
+FROM phusion/baseimage:0.9.9
+MAINTAINER Seid Adem <seid.adem@gmail.com>
 
+# Set correct environment variables.
+#=================
+# Locale settings
+#=================
+ENV LANGUAGE en_US.UTF-8
+ENV LANG en_US.UTF-8
+RUN locale-gen en_US.UTF-8 \
+  && dpkg-reconfigure --frontend noninteractive locales \
+  && apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install \
+    language-pack-en \
+  && rm -rf /var/lib/apt/lists/*
+
+#===================
+# Timezone settings
+#===================
+ENV TZ "US/Pacific"
+RUN echo "US/Pacific" | sudo tee /etc/timezone \
+  && dpkg-reconfigure --frontend noninteractive tzdata
+
+
+# Regenerate SSH host keys. baseimage-docker does not contain any, so you
+# have to do that yourself. You may also comment out this instruction; the
+# init system will auto-generate one during boot.
+# RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
+
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]
+
+
+
+#=================
+# Install some tools
+#=================
+RUN apt-get update && apt-get install -y \ 
+    wget \
+    vim \
+    gcc \
+    make \
+    openssl \
+    screen \
+    unzip \
+    xclip \
+    zip
 RUN apt-get update
-RUN apt-get install -y curl
 
-#
-# http://linuxg.net/how-to-fix-error-sudo-add-apt-repository-command-not-found/
-#
-RUN apt-get install -y software-properties-common
-
-#
-# SEE installing node:
-# https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-#
+#=================
+# Install nodejs                                                                (1)
+#=================
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN cd usr/bin; ln -s nodejs node; cd ../..
 
-#
-# Install git client, jdk
-#
-RUN apt-get install -y git
-RUN apt-get update
+RUN npm install -g requirejs
+RUN npm install -g grunt-cli
+RUN npm install -g karma
+RUN npm install -g request
+
+#==============
+# Install jdk                                                                  (2)
+#==============
 RUN apt-get install -y default-jdk
 
-#
-# Installing SASS/Compass
-# http://ndever.net/articles/linux/installing-sass-and-compass-ubuntu-1210-1304
-#
-RUN apt-get install -y ruby-full rubygems-integration
-RUN gem install sass -v 3.2.19
-RUN gem install compass
-
-#
-# Install gulp, bower, protractor
-#
-RUN npm install -g gulp
-RUN npm install -g bower
+#=================
+# Install protractor 
+#=================
 RUN npm install -g protractor
 RUN webdriver-manager update
 
-#
-# Install pip
-#
-RUN apt-get install -y python-pip
 
-#
-# Install aws command line interface
-#
-RUN pip install awscli
-
-###################################################################################################
-##
-## Selenium / Protractor setup.
-##
-## There are some special selenium setup to get it to run headless chrome and FF:
-## - https://www.exratione.com/2013/12/angularjs-headless-end-to-end-testing-with-protractor-and-selenium/
-##
-## Also note that unlike many of the example Dockerfiles in DockerHub, we are not standing up
-## a persistant selenium instance. We are creating and tearing down a selenium/webdriver instance
-## every time a set of integration tests are run.
-##
-###################################################################################################
-
-#
-# Rely on the selenium-standalone npm
-# Check out and test selenium-standalone@latest and make sure that the following command:
-# - 'docker run --privileged -t -i <current_docker_image> ./testSelenium.sh'
-# still succeeds before attempting to update the version number
-#
-ENV SELENIUM_VERSION 2.43.1
-ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
-
-#
-# Create a Xvfb init.d deamon
-#
+#==========
+# Create a Xvfb init.d deamon                                                  (3)
+#==========
 RUN apt-get install -y xvfb
 ADD xvfb /etc/init.d/
 RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
 
-#
-# Packages to keep Chrome and FF happy.
-#
+#==========
+# Packages to keep Chrome and FF happy.                                        (4)
+#==========
 RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi
 RUN apt-get install -y xfonts-scalable xserver-xorg-core
 RUN apt-get update
 RUN apt-get install -y dbus-x11
 
-#
-# PhantomJS magic.
-#
+#==========
+# PhantomJS magic.                                                             (5)
+#==========
 RUN apt-get install -y libfontconfig1-dev
 
-#
-# Install Browsers.
-#
+#==========
+# Install Browsers.                                                            (6)
+#==========
 RUN apt-get install -y chromium-browser firefox
 RUN npm install -g phantomjs
 
-#
-# Install Selenium and chromedriver.
-#
-RUN npm install --production selenium-standalone@$SELENIUM_NPM_VERSION -g
+#==========
+# Selenium and chromedriver.                                                   (7)                                                                   
+#==========
+ENV SELENIUM_VERSION 2.43.1
+ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+
+RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
 RUN npm install -g chromedriver
 
-#
-# Setup WORKINGDIR so that docker image can be easily tested.
-#
-RUN mkdir -p /srcTest
-ADD . srcTest
-WORKDIR srcTest
 
-RUN chmod ugo+x testSelenium.sh
 
-#
-# Install Selenium locally.
-#
-RUN npm install --production selenium-standalone@$SELENIUM_NPM_VERSION
+#====================================================================
+# Script to run selenium standalone server for Chrome and/or Firefox
+#====================================================================
+COPY ./bin/*.sh /opt/selenium/
+RUN chmod +x /opt/selenium/*.sh
+
+
+#============================
+# Some configuration options
+#============================
+ENV SCREEN_WIDTH 1360
+ENV SCREEN_HEIGHT 1020
+ENV SCREEN_DEPTH 24
+ENV SELENIUM_PORT 4444
+ENV DISPLAY :20.0
+#================================
+# Expose Container's Directories
+#================================
+VOLUME /var/log
+#================================
+# Expose Container's Ports
+#================================
+EXPOSE 4444 5900
+#===================
+# CMD or ENTRYPOINT
+#===================
+# Start a selenium standalone server for Chrome and/or Firefox
+CMD ["/opt/selenium/entry_point.sh"]
