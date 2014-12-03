@@ -10,9 +10,9 @@ export XTERMINAL_LOG="/tmp/local-sel-headless.log"
 export SELENIUM_LOG="/tmp/selenium-server-standalone.log"
 
 # As of docker >= 1.2.0 is possible to append our stuff directly into /etc/hosts
-cat /tmp/hosts >> /etc/hosts
-echo "docker.host.dev   $DOCKER_HOST_IP" >> /etc/hosts
-echo "docker.guest.dev  $CONTAINER_IP"   >> /etc/hosts
+## cat /tmp/hosts >> /etc/hosts
+## echo "docker.host.dev   $DOCKER_HOST_IP" >> /etc/hosts
+## echo "docker.guest.dev  $CONTAINER_IP"   >> /etc/hosts
 
 # Start the X server that can run on machines with no display 
 # hardware and no physical input devices
