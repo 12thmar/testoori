@@ -50,9 +50,15 @@ RUN apt-get update
 #=================
 # Install nodejs                                                                (1)
 #=================
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm
-RUN cd usr/bin; ln -s nodejs node; cd ../..
+ENV NODE_VERSION v0.10.26
+RUN \
+cd /tmp && \
+wget http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz && \
+tar -zxf node-$NODE_VERSION-linux-x64.tar.gz && \
+cd node-$NODE_VERSION-linux-x64 && \
+cp -prf bin/* /usr/local/bin/ && \
+cp -prf lib/* /usr/local/lib/ && \
+cp -prf share/* /usr/local/share/
 
 RUN npm install -g requirejs
 RUN npm install -g grunt-cli
