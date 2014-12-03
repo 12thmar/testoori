@@ -155,7 +155,7 @@ RUN /usr/local/lib/node_modules/protractor/bin/webdriver-manager update
 #==================
 # Chrome webdriver
 #==================
-ENV CHROME_DRIVER_VERSION 2.10.1
+ENV CHROME_DRIVER_VERSION 2.10.0-1
 RUN npm install -g chromedriver@CHROME_DRIVER_VERSION
 
 
