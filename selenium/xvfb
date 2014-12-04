@@ -27,7 +27,7 @@ PIDFILE=/var/run/${NAME}.pid
 # Using -extension RANDR doesn't seem to work anymore. Firefox complains
 # about not finding extension RANDR whether or not you include it here.
 # Fortunately this is a non-fatal warning and doesn't stop Firefox from working.
-XVFB_ARGS=":$DISPLAY -extension RANDR -noreset -ac -screen $DISPLAY $GEOMETRY"
+XVFB_ARGS=":10 -extension RANDR -noreset -ac -screen 10 1024x768x16"
  
 set -e
  
@@ -45,6 +45,7 @@ fi
 case "$1" in
   start)
     log_daemon_msg "Starting $DESC" "$NAME"
+    /usr/bin/Xvfb $DISPLAY -screen 0 $GEOMETRY -ac 2>&1 | tee $XVFB_LOG &
     if start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
            --make-pidfile --exec $XVFB -- $XVFB_ARGS ; then
       log_end_msg 0
