@@ -124,8 +124,7 @@ ENV SELENIUM_VERSION 2.42.0
 RUN \
     /usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium
     mkdir /usr/local/share/selenium
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O
-    /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
+    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
     chown -R selenium:selenium /usr/local/share/selenium
 
 ENV CHROMEDRVR_VERSION 2.10
