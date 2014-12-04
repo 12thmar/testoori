@@ -146,7 +146,7 @@ sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 ADD /selenium/selenium /etc/init.d/selenium
 RUN chown root:root /etc/init.d/selenium
 RUN chmod a+x /etc/init.d/selenium
-RUN update-rc.d  /etc/init.d/selenium defaults
+RUN update-rc.d  selenium defaults
 
 
 
