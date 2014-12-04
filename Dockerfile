@@ -123,17 +123,20 @@ RUN npm install -g phantomjs
 ENV SELENIUM_VERSION_PRE 2.42
 ENV SELENIUM_VERSION 2.42.0
 RUN \
-    ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome 
-    sudo useradd selenium --shell /bin/bash --create-home &&\
-    sudo usermod -a -G sudo selenium && \
-    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar 
+    useradd -m -s /bin/bash -d /home/selenium selenium && \
+    mkdir /usr/local/share/selenium && \
+    cd /tmp && \
+    
+    ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome && \
+
+    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar ~/tmp 
+    cp ~/tmp/selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar 
     chown -R selenium:selenium /usr/local/share/selenium 
 
 ENV CHROMEDRVR_VERSION 2.10
 RUN \
 wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp 
-unzip ~//tmp/chromedriver_linux64.zip -d ~/tmp
+unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp
 chmod +x ~/tmp/chromedriver 
 sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver 
 sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver 
@@ -158,13 +161,20 @@ RUN update-rc.d  selenium defaults
 # SCREEN_WIDTH 1024
 # SCREEN_HEIGHT 768
 # SCREEN_DEPTH 16
-# DISPLAY 10.0
+# DISPLAY 10
 #============================
-ENV SCREEN_WIDTH 1360  
-ENV SCREEN_HEIGHT 1020  
-ENV SCREEN_DEPTH 24    
+#============================
+# Some configuration options
+# SCREEN_WIDTH 1360
+# SCREEN_HEIGHT 1020
+# SCREEN_DEPTH 24
+# DISPLAY 20.0
+#============================
+ENV SCREEN_WIDTH 1024  
+ENV SCREEN_HEIGHT 768  
+ENV SCREEN_DEPTH 16    
 ENV SELENIUM_PORT 4444
-ENV DISPLAY 20.0      
+ENV DISPLAY 10      
 #================================
 # Expose Container's Directories
 #================================
