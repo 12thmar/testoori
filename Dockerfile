@@ -123,7 +123,7 @@ RUN npm install -g phantomjs
 ENV SELENIUM_VERSION_PRE 2.42
 ENV SELENIUM_VERSION 2.42.0
 RUN \
-    useradd -m -s /bin/bash -d /home/selenium selenium && \
+    adduser -m -s /bin/bash -d /home/selenium selenium && \
     mkdir /usr/local/share/selenium && \
     cd /tmp && \
     
