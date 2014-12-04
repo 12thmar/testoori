@@ -18,6 +18,7 @@
 ### END INIT INFO
  
 NAME=Xvfb
+export GEOMETRY="$SCREEN_WIDTH""x""$SCREEN_HEIGHT""x""$SCREEN_DEPTH"
 DESC="$NAME - X Virtual Frame Buffer"
 SCRIPTNAME=/etc/init.d/$NAME
 XVFB=/usr/bin/Xvfb
@@ -26,7 +27,7 @@ PIDFILE=/var/run/${NAME}.pid
 # Using -extension RANDR doesn't seem to work anymore. Firefox complains
 # about not finding extension RANDR whether or not you include it here.
 # Fortunately this is a non-fatal warning and doesn't stop Firefox from working.
-XVFB_ARGS=":10 -extension RANDR -noreset -ac -screen 10 1024x768x16"
+XVFB_ARGS=":$DISPLAY -extension RANDR -noreset -ac -screen $DISPLAY $GEOMETRY"
  
 set -e
  
@@ -45,7 +46,7 @@ case "$1" in
   start)
     log_daemon_msg "Starting $DESC" "$NAME"
     if start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
-          --background --make-pidfile --exec $XVFB -- $XVFB_ARGS ; then
+           --make-pidfile --exec $XVFB -- $XVFB_ARGS ; then
       log_end_msg 0
     else
       log_end_msg 1

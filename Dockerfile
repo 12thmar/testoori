@@ -81,6 +81,7 @@ RUN webdriver-manager update
 # Create a Xvfb init.d deamon                                                  (3)
 #==========
 RUN apt-get install -y xvfb
+# Copy over service script
 ADD selenium/xvfb /etc/init.d/
 RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
@@ -109,29 +110,55 @@ RUN npm install -g phantomjs
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
-ENV SELENIUM_VERSION 2.43.1
-ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+#ENV SELENIUM_VERSION 2.43.1
+#ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
-RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
-RUN npm install -g chromedriver
+#RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
+#RUN npm install -g chromedriver
+
+##############
+# version 2.42
+##############
+ENV SELENIUM_VERSION_PRE 2.42
+ENV SELENIUM_VERSION 2.42.0
+RUN \
+    /usr/sbin/useradd -m -s /bin/bash -d /home/selenium selenium
+    mkdir /usr/local/share/selenium
+    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O
+    /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
+    chown -R selenium:selenium /usr/local/share/selenium
+
+ENV CHROMEDRVR_VERSION 2.10
+RUN \
+wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp 
+unzip ~//tmp/chromedriver_linux64.zip -d ~/tmp
+chmod +x ~/tmp/chromedriver 
+sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver 
+sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver 
+sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 
 
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
 #====================================================================
-COPY ./bin/*.sh /opt/selenium/
-RUN chmod +x /opt/selenium/*.sh
+#Place start script into /etc/init.d/selenium, 
+# and note that it uses the same DISPLAY value as for the Xvfb
+ADD /selenium/selenium /etc/init.d/selenium
+RUN chown root:root /etc/init.d/selenium
+RUN chmod a+x /etc/init.d/selenium
+RUN update-rc.d  /etc/init.d/selenium defaults
+
 
 
 #============================
 # Some configuration options
 #============================
-ENV SCREEN_WIDTH 1360
-ENV SCREEN_HEIGHT 1020
-ENV SCREEN_DEPTH 24
+ENV SCREEN_WIDTH 1360  #1024
+ENV SCREEN_HEIGHT 1020 #768 
+ENV SCREEN_DEPTH 24    #16
 ENV SELENIUM_PORT 4444
-ENV DISPLAY :20.0
+ENV DISPLAY :20.0      #10
 #================================
 # Expose Container's Directories
 #================================
