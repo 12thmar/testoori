@@ -122,25 +122,24 @@ RUN npm install -g phantomjs
 ##############
 ENV SELENIUM_VERSION_PRE 2.42
 ENV SELENIUM_VERSION 2.42.0
+RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN \
-    sudo useradd -m -s /bin/bash -d /home/selenium selenium && \
     mkdir /usr/local/share/selenium && \
     cd /tmp && \
-    
     ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome && \
 
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar ~/tmp 
-    cp ~/tmp/selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar 
+    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar ~/tmp && \ 
+    cp ~/tmp/selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar && \
     chown -R selenium:selenium /usr/local/share/selenium 
 
 ENV CHROMEDRVR_VERSION 2.10
 RUN \
-wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp 
-unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp
-chmod +x ~/tmp/chromedriver 
-sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver 
-sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver 
-sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+     wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp && \
+     unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp && \
+     chmod +x ~/tmp/chromedriver && \
+     sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver && \
+     sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
+     sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 
 
