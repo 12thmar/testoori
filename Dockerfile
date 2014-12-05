@@ -114,31 +114,38 @@ RUN npm install -g phantomjs
 #ENV SELENIUM_VERSION 2.43.1
 #ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
-#RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
-#RUN npm install -g chromedriver
+RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
+RUN mkdir /usr/local/share/selenium 
+RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+
+RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
+RUN npm install -g chromedriver
+
+RUN chown -R selenium:selenium /usr/lib/node_modules/protractor/selenium 
+
 
 ##############
 # version 2.42
 ##############
-ENV SELENIUM_VERSION_PRE 2.42
-ENV SELENIUM_VERSION 2.42.0
-RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
-RUN mkdir /usr/local/share/selenium 
-RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
-RUN cd /tmp
-RUN wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar 
-RUN cp selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
-RUN chown -R selenium:selenium /usr/local/share/selenium 
+## ENV SELENIUM_VERSION_PRE 2.42
+## ENV SELENIUM_VERSION 2.42.0
+## RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
+## RUN mkdir /usr/local/share/selenium 
+## RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+## RUN cd /tmp
+## RUN wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar 
+## RUN cp selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
+## RUN chown -R selenium:selenium /usr/local/share/selenium 
 
 
-ENV CHROMEDRVR_VERSION 2.10
-RUN \
-     wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp && \
-     unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp && \
-     chmod +x ~/tmp/chromedriver && \
-     sudo mv -f ~/tmp/chromedriver /usr/local/share/chromedriver && \
-     sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
-     sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+## ENV CHROMEDRVR_VERSION 2.10
+## RUN \
+##     wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp && \
+##     unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp && \
+##     chmod +x ~/tmp/chromedriver && \
+##     sudo mv -f ~/tmp/chromedriver /usr/local/share/chromedriver && \
+##     sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
+##     sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 
 
