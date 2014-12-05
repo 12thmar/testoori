@@ -136,7 +136,7 @@ RUN \
      wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp && \
      unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp && \
      chmod +x ~/tmp/chromedriver && \
-     sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver && \
+     sudo mv -f ~/tmp/chromedriver /usr/local/share/chromedriver && \
      sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
      sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
