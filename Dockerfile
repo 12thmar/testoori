@@ -123,14 +123,13 @@ RUN npm install -g phantomjs
 ENV SELENIUM_VERSION_PRE 2.42
 ENV SELENIUM_VERSION 2.42.0
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
-RUN \
-    mkdir /usr/local/share/selenium && \
-    cd /tmp && \
-    ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome && \
+RUN mkdir /usr/local/share/selenium 
+RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+RUN cd /tmp
+RUN wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar 
+RUN cp selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
+RUN chown -R selenium:selenium /usr/local/share/selenium 
 
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar ~/tmp && \ 
-    cp ~/tmp/selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar && \
-    chown -R selenium:selenium /usr/local/share/selenium 
 
 ENV CHROMEDRVR_VERSION 2.10
 RUN \
