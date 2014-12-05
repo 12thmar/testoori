@@ -146,8 +146,9 @@ RUN \
 # Script to run selenium standalone server for Chrome and/or Firefox
 #====================================================================
 # Set up loggin directory for Selenium
-RUN mkdir /var/log/selenium && \
-RUN chown selenium:selenium /var/log/selenium
+RUN \
+     mkdir /var/log/selenium && \
+     chown selenium:selenium /var/log/selenium
 #Place start script into /etc/init.d/selenium, 
 # and note that it uses the same DISPLAY value as for the Xvfb
 ADD /selenium/selenium /etc/init.d/selenium
