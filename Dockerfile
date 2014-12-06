@@ -112,7 +112,7 @@ RUN npm install -g phantomjs
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
 #ENV SELENIUM_VERSION 2.43.1
-#ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
@@ -183,6 +183,10 @@ ENV SCREEN_HEIGHT 768
 ENV SCREEN_DEPTH 16    
 ENV SELENIUM_PORT 4444
 ENV DISPLAY 10      
+
+#To make the x-windows apps to connect this Xvfb server
+RUN export DISPLAY=:10
+
 #================================
 # Expose Container's Directories
 #================================
