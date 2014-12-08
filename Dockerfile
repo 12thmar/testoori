@@ -135,6 +135,7 @@ RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
 # Set up loggin directory for Selenium
 RUN \
      mkdir /var/log/selenium && \
+     mkdir -p /opt/selenium && \
      chown selenium:selenium /var/log/selenium
 #Place start script into /etc/init.d/selenium, 
 # and note that it uses the same DISPLAY value as for the Xvfb
@@ -161,5 +162,7 @@ EXPOSE 4444 5900
 # CMD or ENTRYPOINT
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
-RUN sudo /etc/init.d/xvfb start
-RUN sudo /etc/init.d/selenium start
+COPY ./bin/entry_point.sh /opt/selenium/
+RUN  chmod +x /opt/selenium/*.sh
+
+CMD ["/opt/selenium/entry_point.sh"]
