@@ -92,7 +92,7 @@ RUN update-rc.d xvfb defaults
 #==========
 RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-cyrillic
 RUN apt-get install -y xfonts-scalable xserver-xorg-core
-RUN apt-get install -y defoma x-ttcidfont-conf
+#RUN apt-get install -y defoma x-ttcidfont-conf
 RUN apt-get update
 RUN apt-get install -y dbus-x11
 
@@ -111,7 +111,7 @@ RUN npm install -g phantomjs
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
-#ENV SELENIUM_VERSION 2.43.1
+ENV SELENIUM_VERSION 2.43.1
 ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
@@ -172,7 +172,7 @@ RUN update-rc.d  selenium defaults
 # DISPLAY 10
 #============================
 #============================
-# Some configuration options
+# Some  options
 # SCREEN_WIDTH 1360
 # SCREEN_HEIGHT 1020
 # SCREEN_DEPTH 24
