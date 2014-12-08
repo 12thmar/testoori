@@ -114,6 +114,8 @@ RUN npm install -g phantomjs
 ENV SELENIUM_VERSION 2.43.1
 ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
+RUN export SELENIUM_VERSION
+
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 
