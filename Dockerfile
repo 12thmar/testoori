@@ -113,11 +113,13 @@ RUN npm install -g phantomjs
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
 ENV SELENIUM_VERSION 2.44.0
-##ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 RUN export SELENIUM_VERSION
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+
+RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
 
 RUN npm install -g chromedriver
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
