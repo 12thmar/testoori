@@ -75,8 +75,6 @@ RUN apt-get install -y default-jdk
 #=================
 ENV PROTRACTOR_VERSION 1.4.0
 RUN npm install -g protractor@$PROTRACTOR_VERSION
-
-#RUN npm install -g protractor
 RUN webdriver-manager update
 
 
@@ -121,9 +119,7 @@ RUN export SELENIUM_VERSION
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 
-##RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
 RUN npm install -g chromedriver
-
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
 
 
@@ -131,14 +127,14 @@ RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
 
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
+# Place start script into /etc/init.d/selenium 
+# and note that it uses the same DISPLAY value as for the Xvfb
 #====================================================================
 # Set up loggin directory for Selenium
 RUN \
      mkdir /var/log/selenium && \
      mkdir -p /opt/selenium && \
      chown selenium:selenium /var/log/selenium
-#Place start script into /etc/init.d/selenium, 
-# and note that it uses the same DISPLAY value as for the Xvfb
 ADD /selenium/selenium /etc/init.d/selenium
 RUN chown root:root /etc/init.d/selenium
 RUN chmod a+x /etc/init.d/selenium
@@ -157,11 +153,4 @@ RUN export DISPLAY=:10
 #================================
 # Expose Container's Ports
 #================================
-EXPOSE 4444 5900
-#===================
-# CMD or ENTRYPOINT
-#===================
-# Start a selenium standalone server for Chrome and/or Firefox
-## COPY ./bin/entry_point.sh /opt/selenium/
-## RUN  chmod +x /opt/selenium/*.sh
-## CMD ["/opt/selenium/entry_point.sh"]
+EXPOSE 4444
