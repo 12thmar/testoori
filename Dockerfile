@@ -162,7 +162,6 @@ EXPOSE 4444 5900
 # CMD or ENTRYPOINT
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
-COPY ./bin/entry_point.sh /opt/selenium/
-RUN  chmod +x /opt/selenium/*.sh
-
-CMD ["/opt/selenium/entry_point.sh"]
+## COPY ./bin/entry_point.sh /opt/selenium/
+## RUN  chmod +x /opt/selenium/*.sh
+## CMD ["/opt/selenium/entry_point.sh"]
