@@ -73,7 +73,10 @@ RUN apt-get install -y default-jdk
 #=================
 # Install protractor 
 #=================
-RUN npm install -g protractor
+ENV PROTRACTOR_VERSION 1.4.0
+RUN npm install -g protractor@$PROTRACTOR_VERSION
+
+#RUN npm install -g protractor
 RUN webdriver-manager update
 
 
@@ -111,42 +114,18 @@ RUN npm install -g phantomjs
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
-ENV SELENIUM_VERSION 2.43.1
-ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
-
+ENV SELENIUM_VERSION 2.44.0
+##ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 RUN export SELENIUM_VERSION
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 
-RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
+##RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
 RUN npm install -g chromedriver
 
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
 
-
-##############
-# version 2.42
-##############
-## ENV SELENIUM_VERSION_PRE 2.42
-## ENV SELENIUM_VERSION 2.42.0
-## RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
-## RUN mkdir /usr/local/share/selenium 
-## RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
-## RUN cd /tmp
-## RUN wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar 
-## RUN cp selenium-server-standalone-$SELENIUM_VERSION.jar  /usr/local/share/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
-## RUN chown -R selenium:selenium /usr/local/share/selenium 
-
-
-## ENV CHROMEDRVR_VERSION 2.10
-## RUN \
-##     wget -N http://chromedriver.storage.googleapis.com/$CHROMEDRVR_VERSION/chromedriver_linux64.zip -P ~/tmp && \
-##     unzip ~/tmp/chromedriver_linux64.zip -d ~/tmp && \
-##     chmod +x ~/tmp/chromedriver && \
-##     sudo mv -f ~/tmp/chromedriver /usr/local/share/chromedriver && \
-##     sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
-##     sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 
 
@@ -168,31 +147,12 @@ RUN update-rc.d  selenium defaults
 
 #============================
 # Some configuration options
-# SCREEN_WIDTH 1024
-# SCREEN_HEIGHT 768
-# SCREEN_DEPTH 16
-# DISPLAY 10
 #============================
-#============================
-# Some  options
-# SCREEN_WIDTH 1360
-# SCREEN_HEIGHT 1020
-# SCREEN_DEPTH 24
-# DISPLAY 20.0
-#============================
-ENV SCREEN_WIDTH 1024  
-ENV SCREEN_HEIGHT 768  
-ENV SCREEN_DEPTH 16    
-ENV SELENIUM_PORT 4444
-ENV DISPLAY 10      
+ENV SELENIUM_PORT 4444     
 
 #To make the x-windows apps to connect this Xvfb server
 RUN export DISPLAY=:10
 
-#================================
-# Expose Container's Directories
-#================================
-VOLUME /var/log
 #================================
 # Expose Container's Ports
 #================================
@@ -201,4 +161,5 @@ EXPOSE 4444 5900
 # CMD or ENTRYPOINT
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
-#CMD ["/opt/selenium/entry_point.sh"]
+CMD ["sudo /etc/init.d/xvfb start"]
+CMD ["sudo /etc/init.d/selenium start"]
