@@ -1,52 +1,34 @@
-#
-# /etc/rc.d/init.d/xvfb
-#
-# chkconfig: 345 98 90
-# description: starts virtual framebuffer process to
-# enable server
-#
-#
-#
-# Source function library.
-#.  /etc/init.d/functions
-XVFB_OUTPUT=/tmp/Xvfb.out
-XVFB=/usr/bin/X11/Xvfb
-XVFB_OPTIONS=":10 -screen 0 1080x1440x24 -fbdir /var/run"
-
-start()  {
-echo -n "Starting : X Virtual Frame Buffer "
-$XVFB $XVFB_OPTIONS >>$XVFB_OUTPUT 2>&1&;
-RETVAL=$?
-echo
-return $RETVAL
-}
-
-stop()   {
-echo -n "Shutting down : X Virtual Frame Buffer"
-echo
-killall Xvfb
-echo
-return 0
-}
-
+### BEGIN INIT INFO
+# Provides: Xvfb
+# Required-Start: $local_fs $remote_fs
+# Required-Stop:
+# X-Start-Before:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Loads X Virtual Frame Buffer
+### END INIT INFO
+ 
+XVFB=/usr/bin/Xvfb
+XVFBARGS=":1 -screen 0 1024x768x24 -ac +extension GLX +render -noreset"
+PIDFILE=/var/run/xvfb.pid
 case "$1" in
 start)
-start
+echo -n "Starting virtual X frame buffer: Xvfb"
+start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --background --exec $XVFB -- $XVFBARGS
+echo "."
 ;;
 stop)
-stop
-;;
-status)
-status xvfb
+echo -n "Stopping virtual X frame buffer: Xvfb"
+start-stop-daemon --stop --quiet --pidfile $PIDFILE
+echo "."
 ;;
 restart)
-    stop
-    start
-    ;;
-
-*)
-echo "Usage: xvfb {start|stop|status|restart}"
-exit 1
+$0 stop
+$0 start
 ;;
+*)
+echo "Usage: /etc/init.d/xvfb {start|stop|restart}"
+exit 1
 esac
-exit $?
+ 
+exit 0 
