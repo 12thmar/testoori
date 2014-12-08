@@ -161,5 +161,5 @@ EXPOSE 4444 5900
 # CMD or ENTRYPOINT
 #===================
 # Start a selenium standalone server for Chrome and/or Firefox
-CMD ["sudo /etc/init.d/xvfb start"]
-CMD ["sudo /etc/init.d/selenium start"]
+RUN sudo /etc/init.d/xvfb start
+RUN sudo /etc/init.d/selenium start
