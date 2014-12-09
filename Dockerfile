@@ -73,7 +73,7 @@ RUN apt-get install -y default-jdk
 #=================
 # Install protractor 
 #=================
-ENV PROTRACTOR_VERSION 1.4.0
+ENV PROTRACTOR_VERSION 
 RUN npm install -g protractor@$PROTRACTOR_VERSION
 RUN webdriver-manager update
 
@@ -150,7 +150,7 @@ RUN update-rc.d  selenium defaults
 ENV SELENIUM_PORT 4444     
 
 #To make the x-windows apps to connect this Xvfb server
-RUN export DISPLAY=:10
+RUN export DISPLAY=:1
 
 #================================
 # Expose Container's Ports
