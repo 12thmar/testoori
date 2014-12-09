@@ -118,9 +118,11 @@ RUN apt-get install -y libfontconfig1-dev
 RUN apt-get install -y firefox
 RUN npm install -g phantomjs
 #==chrome
-UN apt-get install libnspr4-0d
+RUN apt-get install libnspr4-0d
 RUN apt-get install libcurl3
-RUN dpkg -i google-chrome-stable_current_amd64.deb
+RUN apt-get install -y chromium-browser
+RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+RUN chmod 777 /usr/bin/google-chrome
 
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
@@ -137,6 +139,7 @@ RUN \
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
+
 
 #RUN npm install -g chromedriver
 #==============
