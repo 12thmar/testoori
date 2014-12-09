@@ -29,7 +29,7 @@ DAEMON_OPTS="-Xmx500m -Xss1024k -jar $JAR_FILE -log $LOG_FILE"
 DAEMON_OPTS="-Djava.security.egd=file:/dev/./urandom $DAEMON_OPTS"
  
 # The value for DISPLAY must match that used by the running instance of Xvfb.
-export DISPLAY=:10
+export DISPLAY=:1
  
 # Make sure that the PATH includes the location of the ChromeDriver binary.
 # This is necessary for tests with Chromium to work.
