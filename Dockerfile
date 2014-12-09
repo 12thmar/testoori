@@ -109,19 +109,41 @@ RUN npm install -g phantomjs
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
-ENV SELENIUM_VERSION 2.43.1
-ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+#ENV SELENIUM_VERSION 2.43.1
+#ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
 
-RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
-RUN npm install -g chromedriver
+RUN npm install -g --production selenium-standalone
 
+RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
+RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+
+#RUN npm install -g chromedriver
+#==============
+# Install Browsers                                                             (4)
+#==============
+#==================
+# Chrome webdriver
+#==================
+ENV CHROME_DRIVER_VERSION 2.12
+RUN \
+ cd /tmp && \
+ wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/2.12/chromedriver_linux64.zip && \
+ rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver && \
+ unzip /tmp/chromedriver_linux64.zip && \
+ rm /tmp/chromedriver_linux64.zip && \
+ mv /tmp/chromedriver /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+ chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
+ ln -fs /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+
+
+RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
 
 
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
 #====================================================================
-COPY ./bin/*.sh /opt/selenium/
-RUN chmod +x /opt/selenium/*.sh
+#COPY ./bin/*.sh /opt/selenium/
+#RUN chmod +x /opt/selenium/*.sh
 
 
 #============================
