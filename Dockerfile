@@ -47,14 +47,16 @@ RUN apt-get update && apt-get install -y \
     zip
 RUN apt-get update
 
-#=================
-# google public key                                                              (0)
-#=================
-  # Add Google public key to apt
-RUN wget -q -O - "https://dl-ssl.google.com/linux/linux_signing_key.pub" | sudo apt-key add -
+#=================              
+#  google public key                                                                  (0)
+#================= 
+# Add Google Chrome's repo to sources.list
+RUN  echo "deb http://archive.ubuntu.com/ubuntu trusty main universe\n" > /etc/apt/sources.list \&& 
+     echo "deb http://archive.ubuntu.com/ubuntu trusty-updates main universe\n" >> /etc/apt/sources.list
+# Install Google's public key used for signing packages (e.g. Chrome)
+# (Source: http://www.google.com/linuxrepositories/)
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 
-  # Add Google to the apt-get source list
-RUN echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
 RUN apt-get update
 
 #=================
