@@ -51,10 +51,11 @@ RUN apt-get update
 # google public key                                                              (0)
 #=================
   # Add Google public key to apt
-  wget -q -O - "https://dl-ssl.google.com/linux/linux_signing_key.pub" | sudo apt-key add -
+RUN wget -q -O - "https://dl-ssl.google.com/linux/linux_signing_key.pub" | sudo apt-key add -
 
   # Add Google to the apt-get source list
-  echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
+RUN echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list
+RUN apt-get update
 
 #=================
 # Install nodejs                                                                (1)
