@@ -133,7 +133,7 @@ RUN \
  rm /tmp/chromedriver_linux64.zip && \
  mv /tmp/chromedriver /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
  chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION && \
- ln -fs /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+ ln -fs /usr/local/lib/node_modules/protractor/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/local/bin/chromedriver
 
 
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
