@@ -142,6 +142,21 @@ RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
 #====================================================================
+# Set up loggin directory for Selenium
+RUN \
+     mkdir /var/log/selenium && \
+     chown selenium:selenium /var/log/selenium
+#Place start script into /etc/init.d/selenium, 
+# and note that it uses the same DISPLAY value as for the Xvfb
+ADD /selenium/selenium /etc/init.d/selenium
+RUN chown root:root /etc/init.d/selenium
+RUN chmod a+x /etc/init.d/selenium
+RUN update-rc.d  selenium defaults
+
+
+#====================================================================
+# Script to run selenium standalone server for Chrome and/or Firefox
+#====================================================================
 #COPY ./bin/*.sh /opt/selenium/
 #RUN chmod +x /opt/selenium/*.sh
 
