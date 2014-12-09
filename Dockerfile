@@ -176,11 +176,9 @@ RUN update-rc.d  selenium defaults
 #============================
 # Some configuration options
 #============================
-ENV SCREEN_WIDTH 1360
-ENV SCREEN_HEIGHT 1020
-ENV SCREEN_DEPTH 24
 ENV SELENIUM_PORT 4444
-ENV DISPLAY :20.0
+ENV DISPLAY :1.0
+RUN export DISPLAY=:1.0
 #================================
 # Expose Container's Directories
 #================================
