@@ -73,8 +73,7 @@ RUN apt-get install -y default-jdk
 #=================
 # Install protractor 
 #=================
-ENV PROTRACTOR_VERSION 
-RUN npm install -g protractor@$PROTRACTOR_VERSION
+RUN npm install -g protractor
 RUN webdriver-manager update
 
 
@@ -82,7 +81,6 @@ RUN webdriver-manager update
 # Create a Xvfb init.d deamon                                                  (3)
 #==========
 RUN apt-get install -y xvfb
-# Copy over service script
 ADD selenium/xvfb /etc/init.d/
 RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
@@ -93,7 +91,7 @@ RUN update-rc.d xvfb defaults
 #==========
 RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-cyrillic
 RUN apt-get install -y xfonts-scalable xserver-xorg-core
-#RUN apt-get install -y defoma x-ttcidfont-conf
+RUN apt-get install -y defoma x-ttcidfont-conf
 RUN apt-get update
 RUN apt-get install -y dbus-x11
 
@@ -108,51 +106,42 @@ RUN apt-get install -y libfontconfig1-dev
 RUN apt-get install -y chromium-browser firefox
 RUN npm install -g phantomjs
 
-
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
 #==========
-ENV SELENIUM_VERSION 2.44.0
+ENV SELENIUM_VERSION 2.43.1
 ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
-RUN export SELENIUM_VERSION
-
-RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
-RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 
 RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION 
-
 RUN npm install -g chromedriver
-RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium 
-
 
 
 
 #====================================================================
 # Script to run selenium standalone server for Chrome and/or Firefox
-# Place start script into /etc/init.d/selenium 
-# and note that it uses the same DISPLAY value as for the Xvfb
 #====================================================================
-# Set up loggin directory for Selenium
-RUN \
-     mkdir /var/log/selenium && \
-     mkdir -p /opt/selenium && \
-     chown selenium:selenium /var/log/selenium
-ADD /selenium/selenium /etc/init.d/selenium
-RUN chown root:root /etc/init.d/selenium
-RUN chmod a+x /etc/init.d/selenium
-RUN update-rc.d  selenium defaults
-
+COPY ./bin/*.sh /opt/selenium/
+RUN chmod +x /opt/selenium/*.sh
 
 
 #============================
 # Some configuration options
 #============================
-ENV SELENIUM_PORT 4444     
-
-#To make the x-windows apps to connect this Xvfb server
-RUN export DISPLAY=:1
-
+ENV SCREEN_WIDTH 1360
+ENV SCREEN_HEIGHT 1020
+ENV SCREEN_DEPTH 24
+ENV SELENIUM_PORT 4444
+ENV DISPLAY :20.0
+#================================
+# Expose Container's Directories
+#================================
+VOLUME /var/log
 #================================
 # Expose Container's Ports
 #================================
-EXPOSE 4444
+EXPOSE 4444 5900
+#===================
+# CMD or ENTRYPOINT
+#===================
+# Start a selenium standalone server for Chrome and/or Firefox
+#CMD ["/opt/selenium/entry_point.sh"]
