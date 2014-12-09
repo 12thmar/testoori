@@ -115,8 +115,12 @@ RUN apt-get install -y libfontconfig1-dev
 #==========
 # Install Browsers.                                                            (6)
 #==========
-RUN apt-get install -y google-chrome-stable firefox
+RUN apt-get install -y firefox
 RUN npm install -g phantomjs
+#==chrome
+UN apt-get install libnspr4-0d
+RUN apt-get install libcurl3
+RUN dpkg -i google-chrome-stable_current_amd64.deb
 
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
