@@ -125,8 +125,7 @@ RUN rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver
 
 #RUN npm install -g --production selenium-standalone
 RUN \
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O
-                /usr/local/lib/node_modules/protractor/selenium-server-standalone-$SELENIUM_VERSION.jar
+    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/lib/node_modules/protractor/selenium-server-standalone-$SELENIUM_VERSION.jar
 
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
