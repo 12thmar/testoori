@@ -143,7 +143,7 @@ ENV SELENIUM_VERSION_PRE 2.43
 ENV SELENIUM_VERSION 2.43.1
 
 RUN rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver
-RUN rm /usr/local/lib/node_modules/protractor/selenium/* 
+#RUN rm /usr/local/lib/node_modules/protractor/selenium/* 
 
 #RUN npm install -g --production selenium-standalone
 RUN \
