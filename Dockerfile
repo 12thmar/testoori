@@ -108,7 +108,7 @@ RUN apt-get install -y libfontconfig1-dev
 RUN apt-get install -y firefox
 RUN npm install -g phantomjs
 #==chrome
-RUN apt-get install libnspr4-0d libcurl3 libxss1 libappindicator1 libindicator7
+RUN apt-get install -y libnspr4-0d libcurl3 libxss1 libappindicator1 libindicator7
 
 #==========
 # google key
