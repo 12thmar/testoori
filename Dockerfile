@@ -115,7 +115,7 @@ RUN apt-get install -y libnspr4-0d libcurl3 libxss1 libappindicator1 libindicato
 #==========
 #RUN echo "deb http://dl.google.com/linux/chrome/deb/  stable non-free main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list 
 #RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-#RUN sudo apt-get update
+RUN sudo apt-get update
 
 
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -149,6 +149,7 @@ RUN rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver
 RUN \
     cd /tmp && \
     wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar && \
+    mkdir /usr/local/lib/node_modules/protractor/selenium && \
     mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
 
 
