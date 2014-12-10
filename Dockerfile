@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y \
     zip
 RUN apt-get update
 
+
+
 #=================
 # Install nodejs                                                                (1)
 #=================
@@ -87,6 +89,13 @@ RUN chmod ugo+x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
 
 #==========
+# google key
+#==========
+RUN echo "deb http://dl.google.com/linux/chrome/deb/  stable non-free main" | sudo tee -a /etc/apt/sources.list && \
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+RUN sudo apt-get update
+
+#==========
 # Packages to keep Chrome and FF happy.                                        (4)
 #==========
 RUN apt-get install -y x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-cyrillic
@@ -105,18 +114,19 @@ RUN apt-get install -y libfontconfig1-dev
 RUN apt-get install -y firefox
 RUN npm install -g phantomjs
 #==chrome
-RUN apt-get install libnspr4-0d
-RUN apt-get install libcurl3
+RUN apt-get install libnspr4-0d libcurl3 libxss1 libappindicator1 libindicator7
+
 
 ##RUN apt-get install -y chromium-browser
 ##RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 ##RUN chmod 777 /usr/bin/google-chrome
 
-RUN \
-    cd /tmp && \
-    wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_i686.deb && \
-    dpkg -i google-chrome-stable_current_i686.deb && \
-    apt-get -f install
+RUN apt-get install google-chrome-stable
+# RUN \
+#    cd /tmp && \
+#    wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_i686.deb && \
+#    dpkg -i google-chrome-stable_current_i686.deb && \
+#    apt-get -f install
 
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
