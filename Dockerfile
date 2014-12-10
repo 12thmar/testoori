@@ -130,7 +130,7 @@ RUN rm /usr/local/lib/node_modules/protractor/selenium/*
 #RUN npm install -g --production selenium-standalone
 RUN \
     cd /tmp && \
-    wget http://selenium-release.storage.googleapis.com/index.html?path=$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar
+    wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION..jar && \
     mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
 
 
