@@ -116,7 +116,7 @@ RUN \
     cd /tmp && \
     wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_i686.deb && \
     dpkg -i google-chrome-stable_current_i686.deb && \
-    apt-get -f install && \
+    apt-get -f install
 
 #==========
 # Selenium and chromedriver.                                                   (7)                                                                   
