@@ -88,12 +88,6 @@ RUN chown root:root /etc/init.d/xvfb
 RUN chmod ugo+x /etc/init.d/xvfb
 RUN update-rc.d xvfb defaults
 
-#==========
-# google key
-#==========
-RUN echo "deb http://dl.google.com/linux/chrome/deb/  stable non-free main" | sudo tee -a /etc/apt/sources.list && \
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-RUN sudo apt-get update
 
 #==========
 # Packages to keep Chrome and FF happy.                                        (4)
@@ -116,12 +110,26 @@ RUN npm install -g phantomjs
 #==chrome
 RUN apt-get install libnspr4-0d libcurl3 libxss1 libappindicator1 libindicator7
 
+#==========
+# google key
+#==========
+#RUN echo "deb http://dl.google.com/linux/chrome/deb/  stable non-free main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list 
+#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#RUN sudo apt-get update
+
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+ echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
+RUN apt-get update -qqy && \
+ apt-get -qqy install google-chrome-stable && \
+ rm -rf /var/lib/apt/lists/* && \
+ rm /etc/apt/sources.list.d/google-chrome.list
 
 ##RUN apt-get install -y chromium-browser
 ##RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
 ##RUN chmod 777 /usr/bin/google-chrome
 
-RUN apt-get install google-chrome-stable
+#RUN apt-get install google-chrome-stable
 # RUN \
 #    cd /tmp && \
 #    wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_i686.deb && \
