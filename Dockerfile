@@ -76,7 +76,7 @@ RUN apt-get install -y default-jdk
 # Install protractor 
 #=================
 RUN npm install -g protractor
-#RUN webdriver-manager update
+RUN webdriver-manager update
 
 
 #==========
@@ -110,68 +110,19 @@ RUN npm install -g phantomjs
 #==chrome
 RUN apt-get install -y libnspr4-0d libcurl3 libxss1 libappindicator1 libindicator7
 
-#==========
-# google key
-#==========
-#RUN echo "deb http://dl.google.com/linux/chrome/deb/  stable non-free main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list 
-#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-RUN sudo apt-get update
-
-
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
- echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list 
-RUN apt-get update -qqy && \
- apt-get -qqy install google-chrome-stable && \
- rm -rf /var/lib/apt/lists/* && \
- rm /etc/apt/sources.list.d/google-chrome.list
-
-##RUN apt-get install -y chromium-browser
-##RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
-##RUN chmod 777 /usr/bin/google-chrome
-
-#RUN apt-get install google-chrome-stable
-# RUN \
-#    cd /tmp && \
-#    wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_i686.deb && \
-#    dpkg -i google-chrome-stable_current_i686.deb && \
-#    apt-get -f install
+RUN apt-get install -y chromium-browser
+RUN ln -s /usr/lib/chromium-browser/chromium-browser /usr/bin/google-chrome
+RUN chmod 777 /usr/bin/google-chrome
 
 #==========
-# Selenium and chromedriver.                                                   (7)                                                                   
+# Chromedriver.                                                                  (7)                                                                   
 #==========
-ENV SELENIUM_VERSION_PRE 2.43
-ENV SELENIUM_VERSION 2.43.1
-
-RUN rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver
-#RUN rm /usr/local/lib/node_modules/protractor/selenium/* 
-
-#RUN npm install -g --production selenium-standalone
-RUN \
-    cd /tmp && \
-    wget http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar && \
-    mkdir /usr/local/lib/node_modules/protractor/selenium && \
-    mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
-
-
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
 
 
-#RUN npm install -g chromedriver
-#==============
-# Install Browsers                                                             (4)
-#==============
-#==================
-# Chrome webdriver
-# Download and copy the ChromeDriver to /usr/local/bin
-#==================
-ENV CHROME_DRIVER_VERSION 2.11
-RUN \
- cd /tmp && \
- wget --no-verbose -O chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
- unzip chromedriver_linux64.zip && \
- mv chromedriver /usr/local/bin && \
- chmod 755 /usr/local/bin/chromedriver
+RUN npm install -g chromedriver
+chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver
 
  
 
