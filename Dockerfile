@@ -51,11 +51,12 @@ RUN apt-get update
 #  google public key                                                                  (0)
 #================= 
 # Add Google Chrome's repo to sources.list
-RUN  echo "deb http://archive.ubuntu.com/ubuntu trusty main universe\n" > /etc/apt/sources.list && \ 
-     echo "deb http://archive.ubuntu.com/ubuntu trusty-updates main universe\n" >> /etc/apt/sources.list
+
 # Install Google's public key used for signing packages (e.g. Chrome)
 # (Source: http://www.google.com/linuxrepositories/)
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+
 
 RUN apt-get update
 
@@ -133,7 +134,9 @@ RUN rm -rf /usr/local/lib/node_modules/protractor/selenium/chromedriver
 
 #RUN npm install -g --production selenium-standalone
 RUN \
-    wget --no-verbose  http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar -O /usr/local/lib/node_modules/protractor/selenium-server-standalone-$SELENIUM_VERSION.jar
+    cd /tmp && \
+    wget --no-verbose -O selenium-server-standalone-$SELENIUM_VERSION.jar http://selenium-release.storage.googleapis.com/$SELENIUM_VERSION_PRE/selenium-server-standalone-$SELENIUM_VERSION.jar
+    mv selenium-server-standalone-$SELENIUM_VERSION.jar /usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-$SELENIUM_VERSION.jar
 
 
 RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 

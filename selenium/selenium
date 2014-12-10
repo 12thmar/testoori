@@ -17,7 +17,7 @@ DESC="Selenium standalone server"
 USER=selenium
 JAVA=/usr/bin/java
 PID_FILE=/var/run/selenium.pid
-SELENIUM_VERSION="2.43.0"
+SELENIUM_VERSION="2.43.1"
 JAR_PATH=/usr/local/lib/node_modules/protractor/selenium
 JAR_FILE="$JAR_PATH"/"selenium-server-standalone-$SELENIUM_VERSION.jar"
 LOG_FILE=/var/log/selenium/selenium.log
@@ -39,7 +39,7 @@ export PATH=$PATH:/usr/local/bin
 case "$1" in
     start)
         echo "Starting $DESC: "
-        start-stop-daemon -c $USER --start --background \
+        start-stop-daemon -c $USER --start \
             --pidfile $PID_FILE --make-pidfile --exec $JAVA -- $DAEMON_OPTS
         ;;
  
