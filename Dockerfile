@@ -17,6 +17,7 @@ RUN apt-get update -qqy \
     openjdk-7-jre-headless \
     unzip \
     wget \
+    sudo \
   && rm -rf /var/lib/apt/lists/*
 
 #==========
