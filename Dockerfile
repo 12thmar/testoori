@@ -4,8 +4,8 @@ MAINTAINER Seid Adem <seid.adem@gmail.com>
 #================================================
 # Customize sources for apt-get
 #================================================
-RUN  echo "deb http://archive.ubuntu.com/ubuntu trusty main universe\n" > /etc/apt/sources.list \
-  && echo "deb http://archive.ubuntu.com/ubuntu trusty-updates main universe\n" >> /etc/apt/sources.list
+RUN  echo "deb http://archive.ubuntu.com/ubuntu precisetrusty main universe\n" > /etc/apt/sources.list \
+  && echo "deb http://archive.ubuntu.com/ubuntu precise-updates main universe\n" >> /etc/apt/sources.list
 
 #========================
 # Miscellaneous packages
@@ -28,10 +28,10 @@ RUN  mkdir -p /opt/selenium \
 #========================================
 # Add normal user with passwordless sudo
 #========================================
-RUN sudo useradd seluser --shell /bin/bash --create-home \
-  && sudo usermod -a -G sudo seluser \
-  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
-  && echo 'seluser:secret' | chpasswd
+RUN sudo useradd seluser --shell /bin/bash --create-home && \
+    sudo usermod -a -G sudo seluser && \
+    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+    echo 'seluser:secret' | chpasswd
 
 #========================
 # Selenium Configuration
