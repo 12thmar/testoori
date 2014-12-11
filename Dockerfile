@@ -117,14 +117,20 @@ RUN chmod 777 /usr/bin/google-chrome
 #==========
 # Chromedriver.                                                                  (7)                                                                   
 #==========
-RUN sudo useradd -m -s /bin/bash -d /home/selenium selenium 
+ENV SELENIUM_NPM_VERSION 2.43.1-2.9.0
+
+RUN npm install -g --production selenium-standalone@$SELENIUM_NPM_VERSION
+RUN npm install -g chromedriver
+
 RUN chown -R selenium:selenium /usr/local/lib/node_modules/protractor/selenium
 
+ENV CHROME_DRIVER_VERSION 2.11.0
 
-RUN npm install -g chromedriver
+RUN npm install -g chromedriver@CHROME_DRIVER_VERSION
 chmod 755 /usr/local/lib/node_modules/protractor/selenium/chromedriver
 
- 
+ENV SELENIUM_VERSION 2.43.1
+RUN npm install -g --production selenium-standalone@$SELENIUM_VERSION
 
 
 #====================================================================
@@ -153,7 +159,7 @@ RUN update-rc.d  selenium defaults
 # Some configuration options
 #============================
 ENV SELENIUM_PORT 4444
-ENV DISPLAY :1.0
+ENV DISPLAY :1.5
 RUN export DISPLAY=:1.0
 #================================
 # Expose Container's Directories
