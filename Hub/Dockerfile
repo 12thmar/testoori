@@ -1,5 +1,5 @@
 FROM seid/base:2.44.0
-MAINTAINER Selenium <selenium-developers@googlegroups.com>
+MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 #========================
 # Selenium Configuration

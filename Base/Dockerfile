@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Selenium <selenium-developers@googlegroups.com>
+MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 #================================================
 # Customize sources for apt-get
