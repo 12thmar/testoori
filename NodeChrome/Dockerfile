@@ -46,10 +46,6 @@ RUN npm install -g grunt-cli
 RUN npm install -g karma
 RUN npm install -g request
 
-#==============
-# Install jdk                                                                 
-#==============
-RUN apt-get install -y default-jdk
 
 #=================
 # Install protractor 
