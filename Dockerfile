@@ -4,7 +4,7 @@ MAINTAINER Seid Adem <seid.adem@gmail.com>
 #================================================
 # Customize sources for apt-get
 #================================================
-RUN  echo "deb http://archive.ubuntu.com/ubuntu precisetrusty main universe\n" > /etc/apt/sources.list \
+RUN  echo "deb http://archive.ubuntu.com/ubuntu precise main universe\n" > /etc/apt/sources.list \
   && echo "deb http://archive.ubuntu.com/ubuntu precise-updates main universe\n" >> /etc/apt/sources.list
 
 #========================
