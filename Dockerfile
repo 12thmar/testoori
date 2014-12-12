@@ -142,3 +142,8 @@ RUN \
 
 
 CMD ["/opt/bin/entry_point.sh"]
+
+#=================================
+# Imagemagick for screen capture
+#=================================
+RUN sudo apt-get install imagemagick
