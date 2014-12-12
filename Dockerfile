@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM phusion/baseimage:0.9.9
 MAINTAINER Seid Adem <seid.adem@gmail.com>
 
 #================================================
@@ -67,9 +67,6 @@ ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
 ENV DISPLAY :99.0
 
-USER seluser
-
-CMD ["/opt/bin/entry_point.sh"]
 
 USER root
 
@@ -96,29 +93,31 @@ RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip http://chromedriver.stora
   && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
+#=========
+# Firefox
+#=========
+RUN apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install \
+    firefox \
+  && rm -rf /var/lib/apt/lists/*
+
 
 #=================
-# Install nodejs                                                                
+# Install nodejs & protractor                                                          
 #=================
 ENV NODE_VERSION v0.10.26
-RUN \
-cd /tmp && \
-wget http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz && \
-tar -zxf node-$NODE_VERSION-linux-x64.tar.gz && \
-cd node-$NODE_VERSION-linux-x64 && \
-cp -prf bin/* /usr/local/bin/ && \
-cp -prf lib/* /usr/local/lib/ && \
-cp -prf share/* /usr/local/share/
+RUN cd /tmp  \
+   && wget http://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.gz \
+   && tar -zxf node-$NODE_VERSION-linux-x64.tar.gz \
+   && cd node-$NODE_VERSION-linux-x64 \
+   && cp -prf bin/* /usr/local/bin/ \
+   && cp -prf lib/* /usr/local/lib/ \
+   && cp -prf share/* /usr/local/share/
 
 RUN npm install -g requirejs
 RUN npm install -g grunt-cli
 RUN npm install -g karma
 RUN npm install -g request
-
-
-#=================
-# Install protractor 
-#=================
 RUN npm install -g protractor
 
 #========================
@@ -159,3 +158,5 @@ RUN \
 
 
 USER seluser
+
+CMD ["/opt/bin/entry_point.sh"]
