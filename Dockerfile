@@ -140,6 +140,5 @@ RUN \
      mkdir /var/log/selenium && \
      chown seluser:seluser /var/log/selenium
 
-USER seluser
 
 CMD ["/opt/bin/entry_point.sh"]
