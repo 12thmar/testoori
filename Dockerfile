@@ -39,7 +39,6 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 
 #===================
 # Timezone settings
-# Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
 #===================
 ENV TZ "US/Pacific"
 RUN echo "US/Pacific" | sudo tee /etc/timezone \
@@ -146,4 +145,6 @@ CMD ["/opt/bin/entry_point.sh"]
 #=================================
 # Imagemagick for screen capture
 #=================================
-RUN sudo apt-get install imagemagick
+RUN apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install curl
+  
