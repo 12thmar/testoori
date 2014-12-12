@@ -127,12 +127,12 @@ RUN npm install -g protractor
 #========================
 # Selenium Configuration
 #========================
-COPY config.json /opt/selenium/config.json
+COPY bin/config.json /opt/selenium/config.json
 
 #=================================
 # Chrome Launch Script Modication
 #=================================
-COPY chrome_launcher.sh /opt/google/chrome/google-chrome
+COPY bin/chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod +x /opt/google/chrome/google-chrome
 
 #====================================================================
