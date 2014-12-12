@@ -140,23 +140,6 @@ RUN \
      mkdir /var/log/selenium && \
      chown seluser:seluser /var/log/selenium
 
-#Place start script into /etc/init.d/selenium, 
-# and note that it uses the same DISPLAY value as for the Xvfb
-## ADD /selenium/selenium /etc/init.d/selenium
-## RUN chown root:root /etc/init.d/selenium
-## RUN chmod a+x /etc/init.d/selenium
-## RUN update-rc.d  selenium defaults
-
-#==========
-# Create a Xvfb init.d deamon                                                  
-#==========
-## RUN apt-get install -y xvfb
-## ADD selenium/xvfb /etc/init.d/
-## RUN chown root:root /etc/init.d/xvfb
-## RUN chmod ugo+x /etc/init.d/xvfb
-## RUN update-rc.d xvfb defaults
-
-
 USER seluser
 
 CMD ["/opt/bin/entry_point.sh"]
