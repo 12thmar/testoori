@@ -8,5 +8,6 @@ fi
 
 xvfb-run --server-args="$DISPLAY -screen 0 $GEOMETRY -ac +extension RANDR" \
   java -jar /opt/selenium/selenium-server-standalone.jar \
+       -log /var/log/selenium/selenium.log
        -nodeConfig /opt/selenium/config.json &
 
