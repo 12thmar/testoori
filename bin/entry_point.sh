@@ -19,5 +19,5 @@ xvfb-run --server-args="$DISPLAY -screen 0 $GEOMETRY -ac +extension RANDR" \
        -nodeConfig /opt/selenium/config.json &
 NODE_PID=$!
 
-#trap shutdown SIGTERM SIGINT
+trap shutdown SIGTERM SIGINT
 #wait $NODE_PID
